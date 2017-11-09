@@ -1,12 +1,22 @@
-var WIDTH = window.innerWidth;
-var HEIGHT = window.innerHeight-5;
-
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
 document.body.appendChild(canvas);
+
+var WIDTH = 0;
+var HEIGHT = 0;
+
+var setSize = function () {
+    WIDTH = window.innerWidth;
+    HEIGHT = window.innerHeight-5;
+
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+};
+
+setSize();
+
+window.addEventListener('resize', setSize);
 
 var walker = new Walker(window.innerWidth/2, window.innerHeight/2, ctx);
 

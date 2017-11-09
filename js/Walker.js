@@ -15,7 +15,7 @@ class Walker {
         image.onload = function (self) {
             self.imgReady = true;
         }(this);
-        image.src = "./img/ant.png";
+        image.src = "./img/stickman.png";
 
         this.image = image;
         this.ctx = ctx;
@@ -23,7 +23,7 @@ class Walker {
 
     display() {
         if (this.imgReady) {
-            this.ctx.setTransform(0.2, 0, 0, 0.2, this.position.x, this.position.y);
+            this.ctx.setTransform(1.5, 0, 0, 1.5, this.position.x, this.position.y);
             this.ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
             this.ctx.setTransform(1,0,0,1,0,0);
         }
