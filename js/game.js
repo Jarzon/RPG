@@ -22,26 +22,55 @@ var walker = new Walker(window.innerWidth/2, window.innerHeight/2, ctx);
 
 var mouse = new Vector(0, 0);
 
+// Events
+
 document.onmousemove = function (event) {
     mouse.set(event.pageX, event.pageY);
 };
 
-var target = new Vector(0, 0);
+var controls = new Controls();
+
+window.onkeydown = function(e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+
+    controls.keypress(key);
+};
+
+window.onkeyup = function(e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+
+    controls.keyreleash(key);
+};
+
+var UPARROW = 38,
+    DOWNARROW = 40,
+    LEFTARROW = 37,
+    RIGHTARROW = 39;
 
 // Draw everything
 var render = function () {
     ctx.fillStyle = '#222222';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    target = mouse;
-
     walker.display();
+
+    if (controls.keys[UPARROW]) {
+        walker.position.add(new Vector(0, -1));
+    }
+    if (controls.keys[DOWNARROW]) {
+        walker.position.add(new Vector(0, 1));
+    }
+    if (controls.keys[LEFTARROW]) {
+        walker.position.add(new Vector(-1, 0));
+    }
+    if (controls.keys[RIGHTARROW]) {
+        walker.position.add(new Vector(1, 0));
+    }
 };
 
 // The main game loop
 var main = function () {
     walker.update();
-    walker.seek(target);
 
     render();
 };
