@@ -21,6 +21,15 @@ class Walker {
         this.ctx = ctx;
     }
 
+    distance(position) {
+        if(position instanceof Vector === false) {
+            position = position.position;
+        }
+        position = position.clone();
+        position.sub(this.position);
+        return position.magnitude();
+    }
+
     display() {
         if (this.imgReady) {
             this.ctx.setTransform(1.5, 0, 0, 1.5, this.position.x, this.position.y);
