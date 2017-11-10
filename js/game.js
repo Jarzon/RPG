@@ -22,7 +22,9 @@ setSize();
 
 window.addEventListener('resize', setSize);
 
-let walker = new Walker(window.innerWidth/2, window.innerHeight/2, ctx);
+let player = new Walker(window.innerWidth/2, window.innerHeight/2, ctx, engine);
+
+let walker2 = new Walker(100, 100, ctx, engine);
 
 let mouse = new Vector(0, 0);
 
@@ -55,25 +57,25 @@ let UPARROW = 38,
 let render = function () {
     engine.background();
 
-    walker.display();
+    player.display();
+    walker2.display();
 
     if (controls.keys[UPARROW]) {
-        walker.position.add(new Vector(0, -1));
+        player.move(0, -1);
     }
     if (controls.keys[DOWNARROW]) {
-        walker.position.add(new Vector(0, 1));
+        player.move(0, 1);
     }
     if (controls.keys[LEFTARROW]) {
-        walker.position.add(new Vector(-1, 0));
+        player.move(-1, 0);
     }
     if (controls.keys[RIGHTARROW]) {
-        walker.position.add(new Vector(1, 0));
+        player.move(1, 0);
     }
 };
 
 // The main game loop
 let main = function () {
-    walker.update();
 
     render();
 };

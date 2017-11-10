@@ -1,13 +1,9 @@
 class Walker {
-    constructor(x, y, ctx) {
+    constructor(x, y, ctx, engine) {
         this.position = new Vector(x, y);
-        this.velocity = new Vector(0, 0);
-        this.acceleration = new Vector(0, 0);
 
-        this.maxspeed = 1.0;
-        this.maxforce = 0.1;
-
-        this.size = 40;
+        this.height = 50;
+        this.width = 40;
 
         this.imgReady = false;
         let image = new Image();
@@ -19,6 +15,43 @@ class Walker {
 
         this.image = image;
         this.ctx = ctx;
+
+        this.engine = engine;
+
+        this.hitboxPanelIndex = 0;
+
+        this.setHitbox();
+    }
+
+    setHitbox() {
+        if(this.hitboxPanelIndex === 0) {
+            this.hitboxPanelIndex = this.engine.addCollisionPanel(this.getHitbox());
+        } else {
+            this.engine.setCollisionPanel(this.hitboxPanelIndex, this.getHitbox());
+        }
+    }
+
+    removeHitbox() {
+        this.engine.removeCollisionPanel(this.hitboxPanelIndex);
+    }
+
+    getHitbox() {
+        return new Panel(this.position.x, this.position.y, this.width, this.height);
+    }
+
+    move(x, y) {
+        let vector = new Vector(x, y);
+
+        let destination = this.getHitbox();
+        destination.move(vector);
+
+        this.removeHitbox();
+
+        if(this.engine.walkable(destination)) {
+            this.position.add(vector);
+        }
+
+        this.setHitbox();
     }
 
     distance(position) {
@@ -27,7 +60,7 @@ class Walker {
         }
         position = position.clone();
         position.sub(this.position);
-        return position.magnitude();
+        return position.magnitude() - (this.height / 2);
     }
 
     display() {
@@ -38,18 +71,11 @@ class Walker {
         }
     }
 
-    update() {
-        this.velocity.add(this.acceleration);
-        this.velocity.limit(this.maxspeed);
-        this.position.add(this.velocity);
-        this.acceleration.multiply(0);
-    }
-
     say (message) {
         this.ctx.fillStyle = "rgb(250, 250, 250)";
         this.ctx.font = "24px Helvetica";
         this.ctx.textAlign = "left";
         this.ctx.textBaseline = "top";
-        this.ctx.fillText(message, this.position.x + this.size, this.position.y);
+        this.ctx.fillText(message, this.position.x + this.width, this.position.y);
     }
 }

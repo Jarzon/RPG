@@ -3,7 +3,39 @@ class Engine {
         this.width = 0;
         this.height = 0;
 
+        this.positions = [];
+
         this.ctx = ctx;
+    }
+
+    addCollisionPanel(panel) {
+        return this.positions.push(panel) - 1;
+    }
+
+    setCollisionPanel(index, panel) {
+        this.positions[index] = panel;
+    }
+
+    removeCollisionPanel(index) {
+        this.positions[index] = undefined;
+    }
+
+    walkable(panel1, selfIndex) {
+        let count = this.positions.length;
+        for(let n = 0; n < count; n++) {
+            let panel2 = this.positions[n];
+            if(panel2 !== undefined) {
+                if(panel1.x < panel2.x + panel2.width &&
+                    panel1.x + panel1.width > panel2.x &&
+                    panel1.y < panel2.y + panel2.height &&
+                    panel1.height + panel1.y > panel2.y) {
+                    this.textbox("cant walk ");
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     resize(width, height) {
