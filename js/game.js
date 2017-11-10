@@ -1,26 +1,30 @@
 // Create the canvas
-var canvas = document.createElement("canvas");
-var ctx = canvas.getContext("2d");
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
 document.body.appendChild(canvas);
 
-var WIDTH = 0;
-var HEIGHT = 0;
+let WIDTH = 0;
+let HEIGHT = 0;
 
-var setSize = function () {
+let engine = new Engine(ctx);
+
+let setSize = function () {
     WIDTH = window.innerWidth;
     HEIGHT = window.innerHeight-5;
 
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
+
+    engine.resize(WIDTH, HEIGHT);
 };
 
 setSize();
 
 window.addEventListener('resize', setSize);
 
-var walker = new Walker(window.innerWidth/2, window.innerHeight/2, ctx);
+let walker = new Walker(window.innerWidth/2, window.innerHeight/2, ctx);
 
-var mouse = new Vector(0, 0);
+let mouse = new Vector(0, 0);
 
 // Events
 
@@ -28,29 +32,28 @@ document.onmousemove = function (event) {
     mouse.set(event.pageX, event.pageY);
 };
 
-var controls = new Controls();
+let controls = new Controls();
 
 window.onkeydown = function(e) {
-    var key = e.keyCode ? e.keyCode : e.which;
+    let key = e.keyCode ? e.keyCode : e.which;
 
     controls.keypress(key);
 };
 
 window.onkeyup = function(e) {
-    var key = e.keyCode ? e.keyCode : e.which;
+    let key = e.keyCode ? e.keyCode : e.which;
 
     controls.keyreleash(key);
 };
 
-var UPARROW = 38,
+let UPARROW = 38,
     DOWNARROW = 40,
     LEFTARROW = 37,
     RIGHTARROW = 39;
 
 // Draw everything
-var render = function () {
-    ctx.fillStyle = '#222222';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+let render = function () {
+    engine.background();
 
     walker.display();
 
@@ -69,7 +72,7 @@ var render = function () {
 };
 
 // The main game loop
-var main = function () {
+let main = function () {
     walker.update();
 
     render();

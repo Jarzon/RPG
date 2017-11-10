@@ -7,7 +7,7 @@ class Walker {
         this.maxspeed = 1.0;
         this.maxforce = 0.1;
 
-        this.size = 30;
+        this.size = 40;
 
         this.imgReady = false;
         let image = new Image();
@@ -36,38 +36,11 @@ class Walker {
         this.acceleration.multiply(0);
     }
 
-    seek(target) {
-        let desired = target.clone();
-        desired.sub(this.position);
-        let d = desired.magnitude();
-        desired.normalize();
-        if (d < 100) {
-            let m = this.map(d,0,100,0,this.maxspeed);
-            desired.multiply(m);
-        } else {
-            desired.multiply(this.maxspeed);
-        }
-
-        let steer = desired.clone();
-        steer.sub(this.velocity);
-        steer.limit(this.maxforce);
-
-        this.applyForce(steer);
-    }
-
-    map(value, istart, istop, ostart, ostop) {
-        return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
-    }
-
     say (message) {
         this.ctx.fillStyle = "rgb(250, 250, 250)";
         this.ctx.font = "24px Helvetica";
         this.ctx.textAlign = "left";
         this.ctx.textBaseline = "top";
         this.ctx.fillText(message, this.position.x + this.size, this.position.y);
-    }
-
-    applyForce(force) {
-        this.acceleration.add(force);
     }
 }
