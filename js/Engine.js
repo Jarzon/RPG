@@ -22,19 +22,19 @@ class Engine {
 
             pos.sub(self.view.position);
 
-            entity.display(entity.position);
+            entity.display(pos);
         });
 
-        if (this.controls.keys[UPARROW]) {
+        if (this.controls.keys[W_KEY]) {
             player.move(0, -1);
         }
-        if (this.controls.keys[DOWNARROW]) {
+        if (this.controls.keys[S_KEY]) {
             player.move(0, 1);
         }
-        if (this.controls.keys[LEFTARROW]) {
+        if (this.controls.keys[A_KEY]) {
             player.move(-1, 0);
         }
-        if (this.controls.keys[RIGHTARROW]) {
+        if (this.controls.keys[D_KEY]) {
             player.move(1, 0);
         }
     }
