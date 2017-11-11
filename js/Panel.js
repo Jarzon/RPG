@@ -11,8 +11,7 @@ class Panel {
         this.height = height;
     }
 
-    move(x, y) {
-        let vector = new Vector(x, y);
+    move(vector) {
         this.position.add(vector);
 
         return this;
