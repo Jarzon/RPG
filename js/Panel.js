@@ -1,7 +1,7 @@
 class Panel {
     constructor(x, y, width, height) {
-        this.x = x || 0;
-        this.y = y || 0;
+        this.position = new Vector(x, y);
+
         this.width = width || 0;
         this.height = height || 0;
     }
@@ -12,13 +12,12 @@ class Panel {
     }
 
     move(vector) {
-        this.x += vector.x;
-        this.y += vector.y;
+        this.position.add(vector);
 
         return this;
     }
 
     clone() {
-        return new Panel(this.x, this.y, this.width, this.height);
+        return new Panel(this.position.x, this.position.y, this.width, this.height);
     }
 }

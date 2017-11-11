@@ -2,8 +2,8 @@ class Walker {
     constructor(x, y, ctx, engine) {
         this.position = new Vector(x, y);
 
-        this.height = 50;
-        this.width = 40;
+        this.height = 38;
+        this.width = 20;
 
         this.imgReady = false;
         let image = new Image();
@@ -63,9 +63,9 @@ class Walker {
         return position.magnitude() - (this.height / 2);
     }
 
-    display() {
+    display(position) {
         if (this.imgReady) {
-            this.ctx.setTransform(1.5, 0, 0, 1.5, this.position.x, this.position.y);
+            this.ctx.setTransform(1, 0, 0, 1, position.x, position.y);
             this.ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
             this.ctx.setTransform(1,0,0,1,0,0);
         }

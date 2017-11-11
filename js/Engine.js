@@ -15,8 +15,14 @@ class Engine {
     render() {
         this.background();
 
+        let self = this;
+
         this.world.forEach(function (entity) {
-            entity.display();
+            let pos = entity.position.clone();
+
+            pos.sub(self.view.position);
+
+            entity.display(entity.position);
         });
 
         if (this.controls.keys[UPARROW]) {
@@ -54,10 +60,10 @@ class Engine {
         for(let n = 0; n < count; n++) {
             let panel2 = this.positions[n];
             if(panel2 !== undefined) {
-                if(panel1.x < panel2.x + panel2.width &&
-                    panel1.x + panel1.width > panel2.x &&
-                    panel1.y < panel2.y + panel2.height &&
-                    panel1.height + panel1.y > panel2.y) {
+                if(panel1.position.x < panel2.position.x + panel2.width &&
+                    panel1.position.x + panel1.width > panel2.position.x &&
+                    panel1.position.y < panel2.position.y + panel2.height &&
+                    panel1.height + panel1.position.y > panel2.position.y) {
                     return false;
                 }
             }
