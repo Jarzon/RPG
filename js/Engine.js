@@ -1,8 +1,5 @@
 class Engine {
     constructor(ctx, controls) {
-        this.width = 0;
-        this.height = 0;
-
         this.positions = [];
 
         this.view = new Panel(0, 0, 0, 0);
@@ -20,9 +17,7 @@ class Engine {
         let self = this;
 
         this.world.forEach(function (entity) {
-            let pos = entity.position.clone();
-
-            pos.sub(self.view.position);
+            let pos = self.getRelativePosition(entity);
 
             entity.display(pos);
         });
@@ -39,6 +34,12 @@ class Engine {
         if (this.controls.keys[D_KEY]) {
             player.move(1, 0);
         }
+    }
+
+    getRelativePosition (entity) {
+        let pos = entity.position.clone();
+
+        return pos.sub(this.view.position);
     }
 
     toggleDebug() {
@@ -90,9 +91,6 @@ class Engine {
 
     resize(width, height) {
         this.view.resize(width, height);
-
-        this.width = width;
-        this.height = height;
     }
 
     background() {
@@ -107,14 +105,14 @@ class Engine {
 
         this.ctx.fillStyle = "#000000";
 
-        this.ctx.fillRect(margin, this.height - (boxHeight+margin), this.width-(margin*2+borderSize), boxHeight);
+        this.ctx.fillRect(margin, this.view.height - (boxHeight+margin), this.view.width-(margin*2+borderSize), boxHeight);
         this.ctx.fillStyle = "#333333";
-        this.ctx.fillRect(margin+borderSize, this.height - (boxHeight+margin-borderSize), this.width-(margin*3-borderSize), boxHeight-borderSize*2);
+        this.ctx.fillRect(margin+borderSize, this.view.height - (boxHeight+margin-borderSize), this.view.width-(margin*3-borderSize), boxHeight-borderSize*2);
 
         this.ctx.fillStyle = "#ffffff";
         this.ctx.font = "24px Helvetica";
         this.ctx.textAlign = "center";
         this.ctx.textBaseline = "middle";
-        this.ctx.fillText(text, this.width/2, this.height - 75);
+        this.ctx.fillText(text, this.view.width/2, this.view.height - 75);
     }
 }
