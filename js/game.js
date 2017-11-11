@@ -54,7 +54,12 @@ window.onkeyup = function(e) {
 const UPARROW = 87,
     DOWNARROW = 83,
     LEFTARROW = 65,
-    RIGHTARROW = 68;
+    RIGHTARROW = 68,
+    W_KEY = 38,
+    S_KEY = 40,
+    A_KEY = 37,
+    D_KEY = 39
+;
 
 let main = function () {
 
