@@ -6,6 +6,11 @@ class Panel {
         this.height = height || 0;
     }
 
+    resize(width, height) {
+        this.width = width;
+        this.height = height;
+    }
+
     move(vector) {
         this.x += vector.x;
         this.y += vector.y;

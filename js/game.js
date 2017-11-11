@@ -6,7 +6,9 @@ document.body.appendChild(canvas);
 let WIDTH = 0;
 let HEIGHT = 0;
 
-let engine = new Engine(ctx);
+let controls = new Controls();
+
+let engine = new Engine(ctx, controls);
 
 let setSize = function () {
     WIDTH = window.innerWidth;
@@ -26,6 +28,9 @@ let player = new Walker(window.innerWidth/2, window.innerHeight/2, ctx, engine);
 
 let walker2 = new Walker(100, 100, ctx, engine);
 
+engine.addEntity(player);
+engine.addEntity(walker2);
+
 let mouse = new Vector(0, 0);
 
 // Events
@@ -33,8 +38,6 @@ let mouse = new Vector(0, 0);
 document.onmousemove = function (event) {
     mouse.set(event.pageX, event.pageY);
 };
-
-let controls = new Controls();
 
 window.onkeydown = function(e) {
     let key = e.keyCode ? e.keyCode : e.which;
@@ -48,37 +51,14 @@ window.onkeyup = function(e) {
     controls.keyreleash(key);
 };
 
-let UPARROW = 38,
-    DOWNARROW = 40,
-    LEFTARROW = 37,
-    RIGHTARROW = 39;
+const UPARROW = 87,
+    DOWNARROW = 83,
+    LEFTARROW = 65,
+    RIGHTARROW = 68;
 
-// Draw everything
-let render = function () {
-    engine.background();
-
-    player.display();
-    walker2.display();
-
-    if (controls.keys[UPARROW]) {
-        player.move(0, -1);
-    }
-    if (controls.keys[DOWNARROW]) {
-        player.move(0, 1);
-    }
-    if (controls.keys[LEFTARROW]) {
-        player.move(-1, 0);
-    }
-    if (controls.keys[RIGHTARROW]) {
-        player.move(1, 0);
-    }
-};
-
-// The main game loop
 let main = function () {
 
-    render();
+    engine.render();
 };
 
-// Let's play this game!
 setInterval(main, 1);

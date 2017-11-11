@@ -1,11 +1,40 @@
 class Engine {
-    constructor(ctx) {
+    constructor(ctx, controls) {
         this.width = 0;
         this.height = 0;
 
         this.positions = [];
 
+        this.view = new Panel(0, 0, 0, 0);
+        this.world = [];
+
         this.ctx = ctx;
+        this.controls = controls;
+    }
+
+    render() {
+        this.background();
+
+        this.world.forEach(function (entity) {
+            entity.display();
+        });
+
+        if (this.controls.keys[UPARROW]) {
+            player.move(0, -1);
+        }
+        if (this.controls.keys[DOWNARROW]) {
+            player.move(0, 1);
+        }
+        if (this.controls.keys[LEFTARROW]) {
+            player.move(-1, 0);
+        }
+        if (this.controls.keys[RIGHTARROW]) {
+            player.move(1, 0);
+        }
+    }
+
+    addEntity(entity) {
+        this.world.push(entity);
     }
 
     addCollisionPanel(panel) {
@@ -20,7 +49,7 @@ class Engine {
         this.positions[index] = undefined;
     }
 
-    walkable(panel1, selfIndex) {
+    walkable(panel1) {
         let count = this.positions.length;
         for(let n = 0; n < count; n++) {
             let panel2 = this.positions[n];
@@ -29,7 +58,6 @@ class Engine {
                     panel1.x + panel1.width > panel2.x &&
                     panel1.y < panel2.y + panel2.height &&
                     panel1.height + panel1.y > panel2.y) {
-                    this.textbox("cant walk ");
                     return false;
                 }
             }
@@ -39,6 +67,8 @@ class Engine {
     }
 
     resize(width, height) {
+        this.view.resize(width, height);
+
         this.width = width;
         this.height = height;
     }
