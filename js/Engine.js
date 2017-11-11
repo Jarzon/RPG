@@ -10,6 +10,8 @@ class Engine {
 
         this.ctx = ctx;
         this.controls = controls;
+
+        this.debug = false;
     }
 
     render() {
@@ -37,6 +39,20 @@ class Engine {
         if (this.controls.keys[D_KEY]) {
             player.move(1, 0);
         }
+    }
+
+    toggleDebug() {
+        if(this.debug) {
+            this.debug = false;
+        } else {
+            this.debug = true;
+        }
+    }
+
+    moveView(x, y) {
+        let vector = new Vector(x, y);
+
+        this.view.move(vector);
     }
 
     addEntity(entity) {

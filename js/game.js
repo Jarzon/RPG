@@ -48,10 +48,15 @@ window.onkeydown = function(e) {
 window.onkeyup = function(e) {
     let key = e.keyCode ? e.keyCode : e.which;
 
+    if(key === F9) {
+        engine.toggleDebug();
+    }
+
     controls.keyreleash(key);
 };
 
-const UPARROW = 38,
+const F9 = 120,
+    UPARROW = 38,
     DOWNARROW = 40,
     LEFTARROW = 37,
     RIGHTARROW = 39,
