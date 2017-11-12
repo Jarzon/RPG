@@ -7,10 +7,15 @@ class Engine {
 
         this.ctx = ctx;
         this.controls = controls;
-        this.freezeControls = false;
+        this.freezeControlsFlag = false;
 
         this.debug = false;
         this.debugTextPoistion = 15;
+
+        // textbox
+
+        this.textboxFlag = false;
+        this.textboxTextxt = '';
     }
 
     update() {
@@ -18,7 +23,7 @@ class Engine {
 
         // Movements
 
-        if(!this.freezeControls) {
+        if(!this.freezeControlsFlag) {
             if (this.controls.key(W_KEY)) {
                 player.move(0, -2);
             }
@@ -56,10 +61,15 @@ class Engine {
 
         // Interaction
 
+        if(this.textboxFlag && this.controls.keypress(SPACE)) {
+            this.unfreezeControls();
+            this.resetTextbox();
+        }
+
         if(this.controls.keypress(SPACE)) {
             this.world.forEach(function (entity) {
                 if(entity !== player) {
-                    if(player.distance(entity.position) < 15) {
+                    if(player.distance(entity.position) < 22) {
                         entity.interaction();
                     }
                 }
@@ -79,6 +89,10 @@ class Engine {
 
             entity.display(pos);
         });
+
+        if(this.textboxFlag) {
+            this.displayTextbox(this.textboxText);
+        }
 
         // debug overlay
 
@@ -125,11 +139,11 @@ class Engine {
     }
 
     freezeControls() {
-        this.freezeControls = true;
+        this.freezeControlsFlag = true;
     }
 
     unfreezeControls() {
-        this.freezeControls = false;
+        this.freezeControlsFlag = false;
     }
 
     walkable(panel1) {
@@ -158,7 +172,18 @@ class Engine {
         this.ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    textbox(text, margin = 20, borderSize = 5) {
+    textbox(text) {
+        this.freezeControls();
+        this.textboxFlag = true;
+        this.textboxText = text;
+    }
+
+    resetTextbox() {
+        this.textboxFlag = false;
+        this.textboxText = '';
+    }
+
+    displayTextbox(text, margin = 20, borderSize = 5) {
         let boxHeight = 100;
 
         // TODO: Align the text vertically
