@@ -40,19 +40,15 @@ document.onmousemove = function (event) {
 };
 
 window.onkeydown = function(e) {
-    let key = e.keyCode ? e.keyCode : e.which;
-
-    controls.keypress(key);
+    controls.keydown(e.keyCode);
 };
 
 window.onkeyup = function(e) {
-    let key = e.keyCode ? e.keyCode : e.which;
-
-    if(key === F9) {
+    if(e.keyCode === F9) {
         engine.toggleDebug();
     }
 
-    controls.keyreleash(key);
+    controls.keyup(e.keyCode);
 };
 
 const F9 = 120,
@@ -63,7 +59,9 @@ const F9 = 120,
     W_KEY = 87,
     S_KEY = 83,
     A_KEY = 65,
-    D_KEY = 68
+    D_KEY = 68,
+    E_KEY = 69,
+    SPACE = 32
 ;
 
 let stopMain;

@@ -71,11 +71,7 @@ class Walker {
         }
     }
 
-    say (message) {
-        this.ctx.fillStyle = "rgb(250, 250, 250)";
-        this.ctx.font = "24px Helvetica";
-        this.ctx.textAlign = "left";
-        this.ctx.textBaseline = "top";
-        this.ctx.fillText(message, this.position.x + this.width, this.position.y);
+    interaction() {
+        this.engine.textbox('hello world');
     }
 }
