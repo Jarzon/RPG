@@ -22,6 +22,8 @@ class Engine {
             entity.display(pos);
         });
 
+        // Movements
+
         if (this.controls.keys[W_KEY]) {
             player.move(0, -1);
         }
@@ -33,6 +35,43 @@ class Engine {
         }
         if (this.controls.keys[D_KEY]) {
             player.move(1, 0);
+        }
+
+        // View
+
+        let margin = 20;
+        let marginHeight = (this.view.height / 100) * margin;
+        let marginWidth = (this.view.width / 100) * margin;
+
+        let relativePos = this.getRelativePosition(player);
+
+        if(relativePos.y < marginHeight) {
+            this.moveView(0, -1);
+        }
+        if(relativePos.y > this.view.height - marginHeight) {
+            this.moveView(0, 1);
+        }
+        if(relativePos.x < marginWidth) {
+            this.moveView(-1, 0);
+        }
+        if(relativePos.x > this.view.width - marginWidth) {
+            this.moveView(1, 0);
+        }
+
+        // Binds to move the view in debug mode
+        if(this.debug) {
+            if (this.controls.keys[UPARROW]) {
+                this.moveView(0, -2);
+            }
+            if (this.controls.keys[DOWNARROW]) {
+                this.moveView(0, 2);
+            }
+            if (this.controls.keys[LEFTARROW]) {
+                this.moveView(-2, 0);
+            }
+            if (this.controls.keys[RIGHTARROW]) {
+                this.moveView(2, 0);
+            }
         }
     }
 
