@@ -9,22 +9,23 @@ class Engine {
         this.controls = controls;
 
         this.debug = false;
+        this.debugTextPoistion = 15;
     }
 
     update() {
         // Movements
 
         if (this.controls.keys[W_KEY]) {
-            player.move(0, -1);
+            player.move(0, -2);
         }
         if (this.controls.keys[S_KEY]) {
-            player.move(0, 1);
+            player.move(0, 2);
         }
         if (this.controls.keys[A_KEY]) {
-            player.move(-1, 0);
+            player.move(-2, 0);
         }
         if (this.controls.keys[D_KEY]) {
-            player.move(1, 0);
+            player.move(2, 0);
         }
 
         // View
@@ -36,32 +37,16 @@ class Engine {
         let relativePos = this.getRelativePosition(player);
 
         if(relativePos.y < marginHeight) {
-            this.moveView(0, -1);
+            this.moveView(0, -2);
         }
         if(relativePos.y > this.view.height - marginHeight) {
-            this.moveView(0, 1);
+            this.moveView(0, 2);
         }
         if(relativePos.x < marginWidth) {
-            this.moveView(-1, 0);
+            this.moveView(-2, 0);
         }
         if(relativePos.x > this.view.width - marginWidth) {
-            this.moveView(1, 0);
-        }
-
-        // Binds to move the view in debug mode
-        if(this.debug) {
-            if (this.controls.keys[UPARROW]) {
-                this.moveView(0, -2);
-            }
-            if (this.controls.keys[DOWNARROW]) {
-                this.moveView(0, 2);
-            }
-            if (this.controls.keys[LEFTARROW]) {
-                this.moveView(-2, 0);
-            }
-            if (this.controls.keys[RIGHTARROW]) {
-                this.moveView(2, 0);
-            }
+            this.moveView(2, 0);
         }
     }
 
@@ -70,11 +55,20 @@ class Engine {
 
         let self = this;
 
+        // display entities
+
         this.world.forEach(function (entity) {
             let pos = self.getRelativePosition(entity);
 
             entity.display(pos);
         });
+
+        // debug overlay
+
+        if(this.debug) {
+            this.debugTextPoistion = 15;
+            this.debugText('Debug Mode');
+        }
     }
 
     getRelativePosition (entity) {
@@ -155,5 +149,15 @@ class Engine {
         this.ctx.textAlign = "center";
         this.ctx.textBaseline = "middle";
         this.ctx.fillText(text, this.view.width/2, this.view.height - 75);
+    }
+
+    debugText(text) {
+        this.ctx.fillStyle = "#ffffff";
+        this.ctx.font = "18px Helvetica";
+        this.ctx.textAlign = "left";
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillText(text, 10, this.debugTextPoistion);
+
+        this.debugTextPoistion += 10;
     }
 }
