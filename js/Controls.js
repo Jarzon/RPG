@@ -5,8 +5,8 @@ class Controls {
     }
 
     keypress(key) {
-        if(this.key(key) && this.keyFlags) {
-            this.keyFlags = false;
+        if(this.key(key) && this.keyFlags[key]) {
+            this.keyFlags[key] = false;
             return true;
         }
         return false;
@@ -18,8 +18,8 @@ class Controls {
 
     keydown(key) {
         if(!this.key(key)) {
-            if(!this.keyFlags) {
-                this.keyFlags = true;
+            if(!this.keyFlags[key]) {
+                this.keyFlags[key] = true;
             }
             this.keys[key] = true;
         }
