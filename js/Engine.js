@@ -11,17 +11,7 @@ class Engine {
         this.debug = false;
     }
 
-    render() {
-        this.background();
-
-        let self = this;
-
-        this.world.forEach(function (entity) {
-            let pos = self.getRelativePosition(entity);
-
-            entity.display(pos);
-        });
-
+    update() {
         // Movements
 
         if (this.controls.keys[W_KEY]) {
@@ -73,6 +63,18 @@ class Engine {
                 this.moveView(2, 0);
             }
         }
+    }
+
+    render() {
+        this.background();
+
+        let self = this;
+
+        this.world.forEach(function (entity) {
+            let pos = self.getRelativePosition(entity);
+
+            entity.display(pos);
+        });
     }
 
     getRelativePosition (entity) {

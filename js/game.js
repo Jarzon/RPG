@@ -66,9 +66,13 @@ const F9 = 120,
     D_KEY = 68
 ;
 
+let stopMain;
+
 let main = function () {
+    stopMain = window.requestAnimationFrame(main);
 
     engine.render();
+    engine.update();
 };
 
-setInterval(main, 1);
+main();
