@@ -12,7 +12,7 @@ let engine = new Engine(ctx, controls);
 
 let setSize = function () {
     WIDTH = window.innerWidth;
-    HEIGHT = window.innerHeight-5;
+    HEIGHT = window.innerHeight;
 
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
