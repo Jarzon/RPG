@@ -7,25 +7,30 @@ class Engine {
 
         this.ctx = ctx;
         this.controls = controls;
+        this.freezeControls = false;
 
         this.debug = false;
         this.debugTextPoistion = 15;
     }
 
     update() {
+        let self = this;
+
         // Movements
 
-        if (this.controls.keys[W_KEY]) {
-            player.move(0, -2);
-        }
-        if (this.controls.keys[S_KEY]) {
-            player.move(0, 2);
-        }
-        if (this.controls.keys[A_KEY]) {
-            player.move(-2, 0);
-        }
-        if (this.controls.keys[D_KEY]) {
-            player.move(2, 0);
+        if(!this.freezeControls) {
+            if (this.controls.key(W_KEY)) {
+                player.move(0, -2);
+            }
+            else if (this.controls.key(S_KEY)) {
+                player.move(0, 2);
+            }
+            if (this.controls.key(A_KEY)) {
+                player.move(-2, 0);
+            }
+            else if (this.controls.key(D_KEY)) {
+                player.move(2, 0);
+            }
         }
 
         // View
@@ -39,14 +44,26 @@ class Engine {
         if(relativePos.y < marginHeight) {
             this.moveView(0, -2);
         }
-        if(relativePos.y > this.view.height - marginHeight) {
+        else if(relativePos.y > this.view.height - marginHeight) {
             this.moveView(0, 2);
         }
         if(relativePos.x < marginWidth) {
             this.moveView(-2, 0);
         }
-        if(relativePos.x > this.view.width - marginWidth) {
+        else if(relativePos.x > this.view.width - marginWidth) {
             this.moveView(2, 0);
+        }
+
+        // Interaction
+
+        if(this.controls.keypress(SPACE)) {
+            this.world.forEach(function (entity) {
+                if(entity !== player) {
+                    if(player.distance(entity.position) < 15) {
+                        entity.interaction();
+                    }
+                }
+            });
         }
     }
 
@@ -107,6 +124,14 @@ class Engine {
         this.positions[index] = undefined;
     }
 
+    freezeControls() {
+        this.freezeControls = true;
+    }
+
+    unfreezeControls() {
+        this.freezeControls = false;
+    }
+
     walkable(panel1) {
         let count = this.positions.length;
         for(let n = 0; n < count; n++) {
@@ -158,6 +183,6 @@ class Engine {
         this.ctx.textBaseline = "middle";
         this.ctx.fillText(text, 10, this.debugTextPoistion);
 
-        this.debugTextPoistion += 10;
+        this.debugTextPoistion += 15;
     }
 }
