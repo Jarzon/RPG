@@ -206,8 +206,8 @@ class Engine {
     }
 
     background() {
-        let width = (this.view.position.x + this.view.width) / this.mapTilesSize;
-        let height = (this.view.position.y + this.view.height) / this.mapTilesSize;
+        let width = Math.min(512, (this.view.position.x + this.view.width) / this.mapTilesSize);
+        let height = Math.min(512, (this.view.position.y + this.view.height) / this.mapTilesSize);
 
         for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
             for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
