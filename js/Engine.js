@@ -209,8 +209,8 @@ class Engine {
         let width = (this.view.position.x + this.view.width) / this.mapTilesSize;
         let height = (this.view.position.y + this.view.height) / this.mapTilesSize;
 
-        for(let x = Math.floor(this.view.position.x / this.mapTilesSize); x < width; x++) {
-            for(let y = Math.floor(this.view.position.y / this.mapTilesSize); y < height; y++) {
+        for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
+            for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
                 let sprite = this.sprites[this.map[x][y]].img;
 
                 this.ctx.setTransform(1, 0, 0, 1, ((x * this.mapTilesSize) - this.view.position.x) - this.mapTilesSize, ((y * this.mapTilesSize) - this.view.position.y) - this.mapTilesSize);
