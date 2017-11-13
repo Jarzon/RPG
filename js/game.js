@@ -24,9 +24,9 @@ setSize();
 
 window.addEventListener('resize', setSize);
 
-let player = new Walker(window.innerWidth/2, window.innerHeight/2, ctx, engine);
+let player = new Walker(12800 + window.innerWidth/2, 12800 + window.innerHeight/2, ctx, engine);
 
-let walker2 = new Walker(100, 100, ctx, engine);
+let walker2 = new Walker(12800 + 100, 12800 + 100, ctx, engine);
 
 engine.addEntity(player);
 engine.addEntity(walker2);
