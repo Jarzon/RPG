@@ -54,7 +54,7 @@ class Engine {
     getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 
     update() {
@@ -231,10 +231,6 @@ class Engine {
         this.textboxText = text;
     }
 
-    resetTextbox() {
-        this.textboxFlag = false;
-        this.textboxText = '';
-    }
 
     displayTextbox(text, margin = 20, borderSize = 5) {
         let boxHeight = 100;
