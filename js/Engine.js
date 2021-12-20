@@ -116,7 +116,7 @@ class Engine {
     }
 
     render() {
-        this.background();
+        this.drawBackground();
 
         let self = this;
 
@@ -147,11 +147,7 @@ class Engine {
     }
 
     toggleDebug() {
-        if(this.debug) {
-            this.debug = false;
-        } else {
-            this.debug = true;
-        }
+        this.debug = !this.debug;
     }
 
     moveView(x, y) {
@@ -205,7 +201,7 @@ class Engine {
         this.view.resize(width, height);
     }
 
-    background() {
+    drawBackground() {
         let width = Math.min(512, (this.view.position.x + this.view.width) / this.mapTilesSize);
         let height = Math.min(512, (this.view.position.y + this.view.height) / this.mapTilesSize);
 
@@ -231,6 +227,11 @@ class Engine {
         this.textboxText = text;
     }
 
+    resetTextbox() {
+        this.unfreezeControls();
+        this.textboxFlag = false;
+        this.textboxText = '';
+    }
 
     displayTextbox(text, margin = 20, borderSize = 5) {
         let boxHeight = 100;
