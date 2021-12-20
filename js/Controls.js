@@ -1,7 +1,8 @@
 class Controls {
     constructor() {
-        this.keys = [222];
-        this.keyFlags = [222];
+
+        this.keys = {};
+        this.keyFlags = {};
     }
 
     keypress(key) {

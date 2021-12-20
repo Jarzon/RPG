@@ -40,28 +40,28 @@ document.onmousemove = function (event) {
 };
 
 window.onkeydown = function(e) {
-    controls.keydown(e.keyCode);
+    controls.keydown(e.key);
 };
 
 window.onkeyup = function(e) {
-    if(e.keyCode === F9) {
+    if(e.key === F9) {
         engine.toggleDebug();
     }
 
-    controls.keyup(e.keyCode);
+    controls.keyup(e.key);
 };
 
 const F9 = 120,
-    UPARROW = 38,
-    DOWNARROW = 40,
-    LEFTARROW = 37,
-    RIGHTARROW = 39,
-    W_KEY = 87,
-    S_KEY = 83,
-    A_KEY = 65,
-    D_KEY = 68,
-    E_KEY = 69,
-    SPACE = 32
+    UPARROWUPARROW = 'ArrowUp',
+    DOWNARROW = 'ArrowDown',
+    LEFTARROW = 'ArrowLeft',
+    RIGHTARROW = 'ArrowRight',
+    W_KEY = 'w',
+    S_KEY = 's',
+    A_KEY = 'a',
+    D_KEY = 'd',
+    E_KEY = 'e',
+    SPACE = ' '
 ;
 
 let stopMain;
