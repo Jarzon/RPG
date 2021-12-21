@@ -8,7 +8,8 @@ let HEIGHT = 0;
 
 let controls = new Controls();
 
-let engine = new Engine(ctx, controls);
+let menu = new HomeMenu(ctx, controls);
+let engine = new Engine(ctx, controls, menu);
 
 let setSize = function () {
     WIDTH = window.innerWidth;

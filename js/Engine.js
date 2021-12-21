@@ -1,5 +1,5 @@
 class Engine {
-    constructor(ctx, controls) {
+    constructor(ctx, controls, homeMenu) {
         this.positions = [];
 
         this.view = new Panel(12800, 12800, 0, 0);
@@ -29,6 +29,8 @@ class Engine {
 
         this.ctx = ctx;
         this.controls = controls;
+        this.homeMenu = homeMenu;
+        homeMenu.setEngine(this);
         this.freezeControlsFlag = false;
 
         // Debug
@@ -49,6 +51,8 @@ class Engine {
                 this.addMapTile(x, y, spritesList[this.getRandomInt(0, 2)]);
             }
         }
+
+        this.state = 0;
     }
 
     getRandomInt(min, max) {
@@ -116,27 +120,32 @@ class Engine {
     }
 
     render() {
-        this.drawBackground();
-
-        let self = this;
-
-        // display entities
-
-        this.world.forEach(function (entity) {
-            let pos = self.getRelativePosition(entity);
-
-            entity.display(pos);
-        });
-
-        if(this.textboxFlag) {
-            this.displayTextbox(this.textboxText);
+        if(this.state === 0) {
+            this.homeMenu.drawBackground();
+            this.homeMenu.draw();
         }
+        else if(this.state === 1) {
+            this.drawBackground();
+            let self = this;
 
-        // debug overlay
+            // display entities
 
-        if(this.debug) {
-            this.debugTextPoistion = 15;
-            this.debugText('Debug Mode');
+            this.world.forEach(function (entity) {
+                let pos = self.getRelativePosition(entity);
+
+                entity.display(pos);
+            });
+
+            if(this.textboxFlag) {
+                this.displayTextbox(this.textboxText);
+            }
+
+            // debug overlay
+
+            if(this.debug) {
+                this.debugTextPoistion = 15;
+                this.debugText('Debug Mode');
+            }
         }
     }
 
