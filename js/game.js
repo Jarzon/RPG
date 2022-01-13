@@ -25,6 +25,8 @@ setSize();
 
 window.addEventListener('resize', setSize);
 
+engine.initialize();
+
 let player = new Walker(12800 + window.innerWidth/2, 12800 + window.innerHeight/2, ctx, engine);
 
 let walker2 = new Walker(12800 + 100, 12800 + 100, ctx, engine);
@@ -62,8 +64,7 @@ const F9 = 120,
     A_KEY = 'a',
     D_KEY = 'd',
     E_KEY = 'e',
-    SPACE = ' '
-;
+    SPACE = ' ';
 
 let stopMain;
 

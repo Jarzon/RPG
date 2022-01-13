@@ -1,6 +1,14 @@
 class HomeMenu {
     constructor(ctx) {
         this.ctx = ctx;
+        this.gradient = 100;
+        this.backgroundSquareDimension = 50;
+        this.direction = true;
+    }
+
+    initialize() {
+        this.columns = this.engine.view.width / this.backgroundSquareDimension;
+        this.rows = this.engine.view.height / this.backgroundSquareDimension;
     }
 
     setEngine(engine) {
@@ -18,26 +26,38 @@ class HomeMenu {
     draw() {
         let startHeight = this.engine.view.height/3;
         this.displayTextbox('Main menu', startHeight);
-        startHeight+=35;
+        startHeight += 35;
         this.displayTextbox('Play', startHeight);
     }
 
-    drawBackground() {
-        const sqareDimention = 10;
-        const columns = this.engine.view.width / sqareDimention;
-        const rows = this.engine.view.height / sqareDimention;
-        const columnColorChange = 255 / columns;
-        const rowsColorChange = 255 / rows;
+    drawBackground()
+    {
+        const columnColorChange = 255 / this.columns;
+        const rowsColorChange = 255 / this.rows;
 
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < columns; j++) {
+        for (let i = 0; i < this.rows; i++) {
+            for (let j = 0; j < this.columns ; j++) {
                 ctx.fillStyle =
-                    'rgb(' + Math.floor(255 - rowsColorChange * i) + ', ' +
-                    Math.floor(255 - columnColorChange * j) + ', 0)';
-                this.ctx.fillRect(j * sqareDimention, i * sqareDimention, sqareDimention, sqareDimention);
+                    'hsl(' +
+                    Math.floor(this.gradient - columnColorChange * (i + j ) / 2) + ', 100%, 50%)';
+
+                this.ctx.fillRect(
+                    j * this.backgroundSquareDimension,
+                    i * this.backgroundSquareDimension,
+                    this.backgroundSquareDimension,
+                    this.backgroundSquareDimension
+                );
             }
         }
 
-        this.ctx.setTransform(1,0,0,1,0,0);
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+
+    tick() {
+        this.gradient += 1;
+
+        if(this.gradient <= 100 || this.gradient >= 255) {
+            this.direction = !this.direction;
+        }
     }
 }

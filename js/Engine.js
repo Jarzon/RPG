@@ -55,6 +55,10 @@ class Engine {
         this.state = 0;
     }
 
+    initialize() {
+        this.homeMenu.initialize();
+    }
+
     getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -100,6 +104,8 @@ class Engine {
         else if(relativePos.x > this.view.width - margin) {
             this.moveView(2, 0);
         }
+
+        this.homeMenu.tick();
 
         // Interaction
 
