@@ -70,6 +70,9 @@ class Engine {
 
         // Movements
 
+        if (this.controls.key(ESC)) {
+            this.state = 0;
+        }
         if(!this.freezeControlsFlag) {
             if (this.controls.key(W_KEY)) {
                 player.move(0, -2);

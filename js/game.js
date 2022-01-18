@@ -62,7 +62,8 @@ window.onkeyup = function(e) {
     controls.keyup(e.key);
 };
 
-const F9 = 120,
+const F9 = 'F9',
+    ESC = 'Escape',
     MOUSE_LEFT = 'mouse_left',
     MOUSE_RIGHT = 'mouse_right',
     UPARROWUPARROW = 'ArrowUp',
