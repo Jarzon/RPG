@@ -3,6 +3,7 @@ class Controls {
 
         this.keys = {};
         this.keyFlags = {};
+        this.mouse = new Vector(0, 0);
     }
 
     keypress(key) {

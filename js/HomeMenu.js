@@ -1,63 +1,76 @@
+class TextElement {
+    constructor(text, x, y, ctx) {
+        this.text = text;
+        this.position = new Vector(x, y);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "30px Helvetica";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        let dim = ctx.measureText(text);
+        this.dimension = new Vector(dim.width, 35);
+    }
+
+    displayTextbox(ctx) {
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "30px Helvetica";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.text, this.position.x, this.position.y);
+    }
+}
+
 class HomeMenu {
     constructor(ctx) {
         this.ctx = ctx;
-        this.gradient = 100;
-        this.backgroundSquareDimension = 50;
-        this.direction = true;
+        this.menuHeight = 0;
+        this.menu = [];
+    }
+
+    addMenuElement(text) {
+        let el = new TextElement(
+            text,
+            this.engine.view.width/2,
+            this.menuHeight,
+            this.ctx
+        );
+
+        this.menu.push(el);
+
+        this.menuHeight += el.dimension.y;
     }
 
     initialize() {
-        this.columns = this.engine.view.width / this.backgroundSquareDimension;
-        this.rows = this.engine.view.height / this.backgroundSquareDimension;
+        this.menuHeight = this.engine.view.height/3;
+        this.addMenuElement('Play');
+        this.addMenuElement('Quit');
     }
 
     setEngine(engine) {
         this.engine = engine;
     }
 
-    displayTextbox(text, heightPos) {
-        this.ctx.fillStyle = "#ffffff";
-        this.ctx.font = "30px Helvetica";
-        this.ctx.textAlign = "center";
-        this.ctx.textBaseline = "middle";
-        this.ctx.fillText(text, this.engine.view.width/2, heightPos);
-    }
-
     draw() {
-        let startHeight = this.engine.view.height/3;
-        this.displayTextbox('Main menu', startHeight);
-        startHeight += 35;
-        this.displayTextbox('Play', startHeight);
+        for(let text of this.menu) {
+            text.displayTextbox(this.ctx);
+        }
     }
 
     drawBackground()
     {
-        const columnColorChange = 255 / this.columns;
-        const rowsColorChange = 255 / this.rows;
+        ctx.fillStyle = 'hsl(212, 50%, 30%)';
 
-        for (let i = 0; i < this.rows; i++) {
-            for (let j = 0; j < this.columns ; j++) {
-                ctx.fillStyle =
-                    'hsl(' +
-                    Math.floor(this.gradient - columnColorChange * (i + j ) / 2) + ', 100%, 50%)';
-
-                this.ctx.fillRect(
-                    j * this.backgroundSquareDimension,
-                    i * this.backgroundSquareDimension,
-                    this.backgroundSquareDimension,
-                    this.backgroundSquareDimension
-                );
-            }
-        }
+        this.ctx.fillRect(
+            0,
+            0,
+            this.engine.view.width,
+            this.engine.view.height
+        );
 
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     tick() {
-        this.gradient += 1;
 
-        if(this.gradient <= 100 || this.gradient >= 255) {
-            this.direction = !this.direction;
-        }
     }
 }

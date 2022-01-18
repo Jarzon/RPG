@@ -34,12 +34,10 @@ let walker2 = new Walker(12800 + 100, 12800 + 100, ctx, engine);
 engine.addEntity(player);
 engine.addEntity(walker2);
 
-let mouse = new Vector(0, 0);
-
 // Events
 
 document.onmousemove = function (event) {
-    mouse.set(event.pageX, event.pageY);
+    controls.mouse.set(event.pageX, event.pageY);
 };
 
 window.onkeydown = function(e) {
