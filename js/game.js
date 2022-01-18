@@ -40,6 +40,16 @@ document.onmousemove = function (event) {
     controls.mouse.set(event.pageX, event.pageY);
 };
 
+let mouseButtons = ['left', 'right', '', 'middle'];
+
+window.onmousedown = function(e) {
+    controls.keydown('mouse_' + mouseButtons[e.buttons-1]);
+};
+
+window.onmouseup = function(e) {
+    controls.keyup('mouse_' + mouseButtons[e.button]);
+};
+
 window.onkeydown = function(e) {
     controls.keydown(e.key);
 };
@@ -53,6 +63,8 @@ window.onkeyup = function(e) {
 };
 
 const F9 = 120,
+    MOUSE_LEFT = 'mouse_left',
+    MOUSE_RIGHT = 'mouse_right',
     UPARROWUPARROW = 'ArrowUp',
     DOWNARROW = 'ArrowDown',
     LEFTARROW = 'ArrowLeft',

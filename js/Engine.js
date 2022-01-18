@@ -105,8 +105,6 @@ class Engine {
             this.moveView(2, 0);
         }
 
-        this.homeMenu.tick();
-
         // Interaction
 
         if(this.textboxFlag && this.controls.keypress(SPACE)) {

@@ -1,7 +1,9 @@
 class TextElement {
-    constructor(text, x, y, ctx) {
+    constructor(text, x, y, callback, ctx) {
         this.text = text;
+        this.callback = callback;
         this.position = new Vector(x, y);
+        this.selected = false;
 
         ctx.fillStyle = "#ffffff";
         ctx.font = "30px Helvetica";
@@ -12,26 +14,39 @@ class TextElement {
     }
 
     displayTextbox(ctx) {
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = this.selected? "#9200ff": "#ffffff";
         ctx.font = "30px Helvetica";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(this.text, this.position.x, this.position.y);
     }
+
+    mouseCollision(controls) {
+        this.selected = controls.mouse.x > this.position.x - this.dimension.x / 2
+            && controls.mouse.y > this.position.y - this.dimension.y / 2
+            && controls.mouse.x < (this.position.x + this.dimension.x / 2)
+            && controls.mouse.y < (this.position.y + this.dimension.y / 2);
+
+        if(this.selected && controls.key(MOUSE_LEFT)) {
+            this.callback();
+        }
+    }
 }
 
 class HomeMenu {
-    constructor(ctx) {
+    constructor(ctx, controls) {
         this.ctx = ctx;
+        this.controls = controls;
         this.menuHeight = 0;
         this.menu = [];
     }
 
-    addMenuElement(text) {
+    addMenuElement(text, callback) {
         let el = new TextElement(
             text,
             this.engine.view.width/2,
             this.menuHeight,
+            callback,
             this.ctx
         );
 
@@ -41,9 +56,19 @@ class HomeMenu {
     }
 
     initialize() {
+        let self = this;
         this.menuHeight = this.engine.view.height/3;
-        this.addMenuElement('Play');
-        this.addMenuElement('Quit');
+        this.addMenuElement('Play', function () {
+            self.engine.state = 1;
+        });
+        this.addMenuElement('Options', function () {
+
+        });
+        this.addMenuElement('Quit', function () {
+            if(confirm('Etes vous sur de vouloir quitter ?')) {
+                window.close();
+            }
+        });
     }
 
     setEngine(engine) {
@@ -53,6 +78,7 @@ class HomeMenu {
     draw() {
         for(let text of this.menu) {
             text.displayTextbox(this.ctx);
+            text.mouseCollision(this.controls);
         }
     }
 
@@ -68,9 +94,5 @@ class HomeMenu {
         );
 
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    }
-
-    tick() {
-
     }
 }

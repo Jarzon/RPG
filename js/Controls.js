@@ -1,6 +1,5 @@
 class Controls {
     constructor() {
-
         this.keys = {};
         this.keyFlags = {};
         this.mouse = new Vector(0, 0);
