@@ -1,31 +1,10 @@
 class Engine {
-    constructor(ctx, controls, homeMenu) {
+    constructor(ctx, view, map, controls, homeMenu) {
         this.positions = [];
 
-        this.view = new Panel(12800, 12800, 0, 0);
+        this.view = view;
+        this.map = map;
         this.world = [];
-
-        this.map = [512];
-        for(let x = 0; x < 512; x++) {
-            this.map[x] = [512];
-        }
-
-        this.mapTilesSize = 50;
-
-        this.sprites = {
-            'earth': {src: 'earth.png', img: {}},
-            'green': {src: 'green.png', img: {}}
-        };
-
-        for(let sprite in this.sprites) {
-            if(!this.sprites.hasOwnProperty(sprite)) continue;
-
-            let image = new Image();
-
-            image.src = './img/' + this.sprites[sprite].src;
-
-            this.sprites[sprite].img = image;
-        }
 
         this.ctx = ctx;
         this.controls = controls;
@@ -43,15 +22,6 @@ class Engine {
         this.textboxFlag = false;
         this.textboxText = '';
 
-        // Temp map
-
-        let spritesList = ['earth', 'green'];
-        for(let x = 0; x < 512; x++) {
-            for(let y = 0; y < 512; y++) {
-                this.addMapTile(x, y, spritesList[this.getRandomInt(0, 2)]);
-            }
-        }
-
         this.state = 0;
     }
 
@@ -59,70 +29,27 @@ class Engine {
         this.homeMenu.initialize();
     }
 
-    getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
-
     update() {
         let self = this;
 
-        // Movements
+        // View
 
         if (this.controls.key(ESC)) {
             this.state = 0;
         }
         if(!this.freezeControlsFlag) {
             if (this.controls.key(W_KEY)) {
-                player.move(0, -2);
+                this.moveView(0, -2);
             }
             else if (this.controls.key(S_KEY)) {
-                player.move(0, 2);
+                this.moveView(0, 2);
             }
             if (this.controls.key(A_KEY)) {
-                player.move(-2, 0);
+                this.moveView(-2, 0);
             }
             else if (this.controls.key(D_KEY)) {
-                player.move(2, 0);
+                this.moveView(2, 0);
             }
-        }
-
-        // View
-
-        let margin = 20;
-        margin = (this.view.height / 100) * margin;
-
-        let relativePos = this.getRelativePosition(player);
-
-        if(relativePos.y < margin) {
-            this.moveView(0, -2);
-        }
-        else if(relativePos.y > this.view.height - margin) {
-            this.moveView(0, 2);
-        }
-        if(relativePos.x < margin) {
-            this.moveView(-2, 0);
-        }
-        else if(relativePos.x > this.view.width - margin) {
-            this.moveView(2, 0);
-        }
-
-        // Interaction
-
-        if(this.textboxFlag && this.controls.keypress(SPACE)) {
-            this.unfreezeControls();
-            this.resetTextbox();
-        }
-
-        if(this.controls.keypress(SPACE)) {
-            this.world.forEach(function (entity) {
-                if(entity !== player) {
-                    if(player.distance(entity.position) < 22) {
-                        entity.interaction();
-                    }
-                }
-            });
         }
     }
 
@@ -132,7 +59,7 @@ class Engine {
             this.homeMenu.draw();
         }
         else if(this.state === 1) {
-            this.drawBackground();
+            this.map.drawBackground();
             let self = this;
 
             // display entities
@@ -146,6 +73,8 @@ class Engine {
             if(this.textboxFlag) {
                 this.displayTextbox(this.textboxText);
             }
+
+            this.displayDeck();
 
             // debug overlay
 
@@ -217,26 +146,6 @@ class Engine {
         this.view.resize(width, height);
     }
 
-    drawBackground() {
-        let width = Math.min(512, (this.view.position.x + this.view.width) / this.mapTilesSize);
-        let height = Math.min(512, (this.view.position.y + this.view.height) / this.mapTilesSize);
-
-        for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
-            for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
-                let sprite = this.sprites[this.map[x][y]].img;
-
-                this.ctx.setTransform(1, 0, 0, 1, ((x * this.mapTilesSize) - this.view.position.x) - this.mapTilesSize, ((y * this.mapTilesSize) - this.view.position.y) - this.mapTilesSize);
-                this.ctx.drawImage(sprite, this.mapTilesSize, this.mapTilesSize);
-            }
-        }
-
-        this.ctx.setTransform(1,0,0,1,0,0);
-    }
-
-    addMapTile(x, y, type) {
-        this.map[x][y] = type;
-    }
-
     textbox(text) {
         this.freezeControls();
         this.textboxFlag = true;
@@ -265,6 +174,19 @@ class Engine {
         this.ctx.textAlign = "center";
         this.ctx.textBaseline = "middle";
         this.ctx.fillText(text, this.view.width/2, this.view.height - 75);
+    }
+
+    displayDeck() {
+        let boxHeight = 200;
+
+        // Background
+
+        this.ctx.fillStyle = "#333333";
+        this.ctx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
+
+        // map
+
+        this.map.drawMiniature();
     }
 
     debugText(text) {

@@ -10,15 +10,16 @@ class TextElement {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         let dim = ctx.measureText(text);
+        this.ctx = ctx;
         this.dimension = new Vector(dim.width, 35);
     }
 
-    displayTextbox(ctx) {
-        ctx.fillStyle = this.selected? "#9200ff": "#ffffff";
-        ctx.font = "30px Helvetica";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(this.text, this.position.x, this.position.y);
+    displayTextbox() {
+        this.ctx.fillStyle = this.selected? "#9200ff": "#ffffff";
+        this.ctx.font = "30px Helvetica";
+        this.ctx.textAlign = "center";
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillText(this.text, this.position.x, this.position.y);
     }
 
     mouseCollision(controls) {
@@ -77,7 +78,7 @@ class HomeMenu {
 
     draw() {
         for(let text of this.menu) {
-            text.displayTextbox(this.ctx);
+            text.displayTextbox();
             text.mouseCollision(this.controls);
         }
     }

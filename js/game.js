@@ -8,8 +8,11 @@ let HEIGHT = 0;
 
 let controls = new Controls();
 
+let view = new Panel(0, 0, 0, 0);
+
+let map = new Map(ctx, view);
 let menu = new HomeMenu(ctx, controls);
-let engine = new Engine(ctx, controls, menu);
+let engine = new Engine(ctx, view, map, controls, menu);
 
 let setSize = function () {
     WIDTH = window.innerWidth;
@@ -27,9 +30,9 @@ window.addEventListener('resize', setSize);
 
 engine.initialize();
 
-let player = new Walker(12800 + window.innerWidth/2, 12800 + window.innerHeight/2, ctx, engine);
+let player = new Walker(window.innerWidth/2, window.innerHeight/2, ctx, engine);
 
-let walker2 = new Walker(12800 + 100, 12800 + 100, ctx, engine);
+let walker2 = new Walker(100, 100, ctx, engine);
 
 engine.addEntity(player);
 engine.addEntity(walker2);
