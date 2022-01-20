@@ -2,14 +2,14 @@ class Map {
     constructor(ctx, view) {
         this.ctx = ctx;
         this.view = view;
-        this.mapSize = 200;
+        this.size = 200;
 
-        this.map = [this.mapSize];
-        for(let x = 0; x < this.mapSize; x++) {
-            this.map[x] = [this.mapSize];
+        this.map = [this.size];
+        for(let x = 0; x < this.size; x++) {
+            this.map[x] = [this.size];
         }
 
-        this.mapTilesSize = 50;
+        this.mapTilesSize = 20;
 
          this.sprites = {
             'earth': {src: 'earth.png', img: {}, color: 'rgb(96,93,0)'},
@@ -29,16 +29,16 @@ class Map {
         // Temp map
 
         let spritesList = ['earth', 'green'];
-        for(let x = 0; x < this.mapSize; x++) {
-            for(let y = 0; y < this.mapSize; y++) {
+        for(let x = 0; x < this.size; x++) {
+            for(let y = 0; y < this.size; y++) {
                 this.addMapTile(x, y, spritesList[this.getRandomInt(0, 2)]);
             }
         }
     }
 
     drawBackground() {
-        let width = Math.min(this.mapSize, (this.view.position.x + this.view.width) / this.mapTilesSize);
-        let height = Math.min(this.mapSize, (this.view.position.y + this.view.height) / this.mapTilesSize);
+        let width = Math.min(this.size, (this.view.position.x + this.view.width) / this.mapTilesSize);
+        let height = Math.min(this.size, (this.view.position.y + this.view.height) / this.mapTilesSize);
 
         for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
             for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
@@ -55,18 +55,31 @@ class Map {
     }
 
     drawMiniature() {
-        for(let x = 0; x < this.mapSize; x++) {
-            for(let y = 0; y < this.mapSize; y++) {
+        let miniMapPosX = this.view.width - this.size;
+        let miniMapPosY = this.view.height - this.size;
+
+        for(let x = 0; x < this.size; x++) {
+            for(let y = 0; y < this.size; y++) {
                 this.ctx.fillStyle = this.sprites[this.map[x][y]].color;
 
                 this.ctx.fillRect(
-                    (this.view.width - this.mapSize) + x,
-                    (this.view.height - this.mapSize) + y,
+                    miniMapPosX + x,
+                    miniMapPosY + y,
                     1,
                     1
                 );
             }
         }
+
+        // camera
+        this.ctx.strokeStyle = "white";
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeRect(
+            miniMapPosX + Math.floor(this.view.position.x / this.mapTilesSize),
+            miniMapPosY + Math.floor(this.view.position.y / this.mapTilesSize),
+             this.view.width / this.mapTilesSize,
+            (this.view.height - 200) / this.mapTilesSize
+            );
     }
 
     addMapTile(x, y, type) {

@@ -39,21 +39,22 @@ class Engine {
         }
         if(!this.freezeControlsFlag) {
             if (this.controls.key(W_KEY)) {
-                this.moveView(0, -2);
+                this.moveView(0, -20);
             }
             else if (this.controls.key(S_KEY)) {
-                this.moveView(0, 2);
+                this.moveView(0, 20);
             }
             if (this.controls.key(A_KEY)) {
-                this.moveView(-2, 0);
+                this.moveView(-20, 0);
             }
             else if (this.controls.key(D_KEY)) {
-                this.moveView(2, 0);
+                this.moveView(20, 0);
             }
         }
     }
 
     render() {
+        this.ctx.clearRect(0, 0, this.view.width, this.view.height);
         if(this.state === 0) {
             this.homeMenu.drawBackground();
             this.homeMenu.draw();
