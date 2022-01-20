@@ -1,4 +1,4 @@
-class Walker {
+class Entity {
     constructor(x, y, ctx, engine) {
         this.position = new Vector(x, y);
 
