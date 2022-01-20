@@ -9,7 +9,7 @@ class Map {
             this.map[x] = [this.size];
         }
 
-        this.mapTilesSize = 20;
+        this.mapTilesSize = 25;
 
          this.sprites = {
             'earth': {src: 'earth.png', img: {}, color: 'rgb(96,93,0)'},
@@ -74,12 +74,20 @@ class Map {
         // camera
         this.ctx.strokeStyle = "white";
         this.ctx.lineWidth = 2;
+
+        let miniViewWidth = this.view.width / this.mapTilesSize;
+        let miniViewHeight = this.view.height / this.mapTilesSize;
+
         this.ctx.strokeRect(
-            miniMapPosX + Math.floor(this.view.position.x / this.mapTilesSize),
-            miniMapPosY + Math.floor(this.view.position.y / this.mapTilesSize),
-             this.view.width / this.mapTilesSize,
-            (this.view.height - 200) / this.mapTilesSize
+            this.minMax(miniMapPosX, miniMapPosX + this.size - miniViewWidth, miniMapPosX + Math.floor(this.view.position.x / this.mapTilesSize)),
+            this.minMax(miniMapPosY, miniMapPosY + this.size - miniViewHeight, miniMapPosY + Math.floor(this.view.position.y / this.mapTilesSize)),
+            miniViewWidth,
+            miniViewHeight
             );
+    }
+
+    minMax(min, max, value) {
+        return Math.min(max, Math.max(min, value));
     }
 
     addMapTile(x, y, type) {
