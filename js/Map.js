@@ -63,19 +63,21 @@ class Map {
         let miniMapPosX = this.view.width - this.size;
         let miniMapPosY = this.view.height - this.size;
 
-        for(let x = 0; x < this.size; x++) {
+        let minimapTileSize = 4;
+
+        for(let x = 0; x < this.size; x+=minimapTileSize) {
             let xp = x * this.mapTilesSize;
-            for(let y = 0; y < this.size; y++) {
+            for(let y = 0; y < this.size; y+=minimapTileSize) {
                 let color = null;
                 let yp = y * this.mapTilesSize;
 
                 for(let entity of this.engine.world) {
                     if(
-                        entity.position.x > xp && entity.position.x < xp + this.mapTilesSize
-                        && entity.position.y > yp && entity.position.y < yp + this.mapTilesSize
+                        entity.position.x > xp && entity.position.x < xp + this.mapTilesSize * minimapTileSize
+                        && entity.position.y > yp && entity.position.y < yp + this.mapTilesSize * minimapTileSize
                     ) {
                         color = 'rgb(0,0,255)';
-                        continue;
+                        break;
                     }
                 }
 
@@ -88,8 +90,8 @@ class Map {
                 this.ctx.fillRect(
                     miniMapPosX + x,
                     miniMapPosY + y,
-                    1,
-                    1
+                    minimapTileSize,
+                    minimapTileSize
                 );
             }
         }
