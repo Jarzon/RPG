@@ -145,6 +145,7 @@ class Engine {
 
     resize(width, height) {
         this.view.resize(width, height);
+        this.homeMenu.reinitialize();
     }
 
     textbox(text) {

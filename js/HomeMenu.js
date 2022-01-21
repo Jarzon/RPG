@@ -56,6 +56,11 @@ class HomeMenu {
         this.menuHeight += el.dimension.y;
     }
 
+    reinitialize() {
+        this.menu = [];
+        this.initialize();
+    }
+
     initialize() {
         let self = this;
         this.menuHeight = this.engine.view.height/3;
