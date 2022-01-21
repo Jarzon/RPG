@@ -1,6 +1,8 @@
 class Engine {
     constructor(ctx, view, map, controls, homeMenu) {
         this.positions = [];
+        this.lastCalledTime = 0;
+        this.fps = 0;
 
         this.view = view;
         this.map = map;
@@ -30,9 +32,18 @@ class Engine {
         this.homeMenu.initialize();
     }
 
-    update() {
-        let self = this;
+    tick(now) {
+        let delta = (now - this.lastCalledTime) / 1000;
+        this.lastCalledTime = now;
+        this.fps = 1 / delta;
 
+        this.debugTextPoistion = 15;
+        this.draw();
+        this.update();
+        this.debugText('FPS: ' + Math.floor(this.fps))
+    }
+
+    update() {
         // View
 
         if (this.controls.key(ESC)) {
@@ -54,7 +65,7 @@ class Engine {
         }
     }
 
-    render() {
+    draw() {
         this.ctx.clearRect(0, 0, this.view.width, this.view.height);
         if(this.state === 0) {
             this.homeMenu.drawBackground();
@@ -62,6 +73,7 @@ class Engine {
         }
         else if(this.state === 1) {
             this.map.drawBackground();
+            this.mouseInteractions();
             let self = this;
 
             // display entities
@@ -83,6 +95,16 @@ class Engine {
             if(this.debug) {
                 this.debugTextPoistion = 15;
                 this.debugText('Debug Mode');
+            }
+        }
+    }
+
+    mouseInteractions() {
+        if(this.controls.key(MOUSE_LEFT)) {
+            for(let n = 0; n < this.world.length; n++) {
+                if(this.world[n].isUnder(this.controls.mouse)) {
+
+                }
             }
         }
     }
@@ -192,13 +214,11 @@ class Engine {
         this.map.drawMiniature();
     }
 
-    debugText(text) {
+    debugText(text, pos = 15) {
         this.ctx.fillStyle = "#ffffff";
         this.ctx.font = "18px Helvetica";
         this.ctx.textAlign = "left";
         this.ctx.textBaseline = "middle";
-        this.ctx.fillText(text, 10, this.debugTextPoistion);
-
-        this.debugTextPoistion += 15;
+        this.ctx.fillText(text, 10, pos);
     }
 }

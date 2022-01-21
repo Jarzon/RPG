@@ -71,7 +71,14 @@ class Entity {
         }
     }
 
-    interaction() {
-        this.engine.textbox('hello world');
+    isUnder(x, y = null) {
+        if(y === null) {
+            y = x.y;
+            x = x.x;
+        }
+        return x > this.position.x - this.height
+            && y > this.position.y - this.width
+            && x < (this.position.x + this.height)
+            && y < (this.position.y + this.width);
     }
 }

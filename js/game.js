@@ -82,11 +82,10 @@ const F9 = 'F9',
 
 let stopMain;
 
-let main = function () {
+let main = function (now) {
     stopMain = window.requestAnimationFrame(main);
 
-    engine.render();
-    engine.update();
+    engine.tick(now);
 };
 
 main();

@@ -43,7 +43,7 @@ class Map {
 
     drawBackground() {
         let width = Math.min(this.size, (this.view.position.x + this.view.width) / this.mapTilesSize);
-        let height = Math.min(this.size, (this.view.position.y + this.view.height) / this.mapTilesSize);
+        let height = Math.min(this.size, (this.view.position.y + (this.view.height - this.size)) / this.mapTilesSize);
 
         for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
             for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
@@ -63,16 +63,17 @@ class Map {
         let miniMapPosX = this.view.width - this.size;
         let miniMapPosY = this.view.height - this.size;
 
-        let minimapTileSize = 4;
+        let minimapTileSize = 5;
 
-        for(let x = 0; x < this.size; x+=minimapTileSize) {
+        for (let x = 0; x < this.size; x += minimapTileSize) {
             let xp = x * this.mapTilesSize;
-            for(let y = 0; y < this.size; y+=minimapTileSize) {
+            for (let y = 0; y < this.size; y += minimapTileSize) {
                 let color = null;
                 let yp = y * this.mapTilesSize;
 
-                for(let entity of this.engine.world) {
-                    if(
+                for(let n = 0; n < this.engine.world.length; n++) {
+                    let entity = this.engine.world[n];
+                    if (
                         entity.position.x > xp && entity.position.x < xp + this.mapTilesSize * minimapTileSize
                         && entity.position.y > yp && entity.position.y < yp + this.mapTilesSize * minimapTileSize
                     ) {
@@ -81,7 +82,7 @@ class Map {
                     }
                 }
 
-                if(color === null) {
+                if (color === null) {
                     color = this.sprites[this.map[x][y]].color;
                 }
 
