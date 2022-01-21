@@ -4,6 +4,7 @@ class Engine {
 
         this.view = view;
         this.map = map;
+        map.setEngine(this);
         this.world = [];
 
         this.ctx = ctx;
