@@ -6,13 +6,11 @@ class Engine {
 
         this.view = view;
         this.map = map;
-        map.setEngine(this);
         this.world = [];
 
         this.ctx = ctx;
         this.controls = controls;
         this.homeMenu = homeMenu;
-        homeMenu.setEngine(this);
         this.freezeControlsFlag = false;
 
         // Debug
@@ -26,6 +24,9 @@ class Engine {
         this.textboxText = '';
 
         this.state = 0;
+
+        map.setEngine(this);
+        homeMenu.setEngine(this);
     }
 
     initialize() {
@@ -66,13 +67,13 @@ class Engine {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.view.width, this.view.height);
+        //
         if(this.state === 0) {
             this.homeMenu.drawBackground();
             this.homeMenu.draw();
         }
         else if(this.state === 1) {
-            this.map.drawBackground();
+            this.map.renderBrackground();
             this.mouseInteractions();
             let self = this;
 
@@ -129,6 +130,26 @@ class Engine {
         this.world.push(entity);
     }
 
+    move(entity, x, y) {
+        let vector = new Vector(x, y);
+
+        let destination = entity.position.clone().add(vector);
+
+        if(this.walkable(destination)) {
+            entity.position.add(vector);
+        }
+    }
+
+    walkable(destination) {
+        let count = this.world.length;
+        for(let n = 0; n < count; n++) {
+            let entity = this.world[n];
+            return destination.isUnder(entity);
+        }
+
+        return true;
+    }
+
     addCollisionPanel(panel) {
         return this.positions.push(panel) - 1;
     }
@@ -147,23 +168,6 @@ class Engine {
 
     unfreezeControls() {
         this.freezeControlsFlag = false;
-    }
-
-    walkable(panel1) {
-        let count = this.positions.length;
-        for(let n = 0; n < count; n++) {
-            let panel2 = this.positions[n];
-            if(panel2 !== undefined) {
-                if(panel1.position.x < panel2.position.x + panel2.width &&
-                    panel1.position.x + panel1.width > panel2.position.x &&
-                    panel1.position.y < panel2.position.y + panel2.height &&
-                    panel1.height + panel1.position.y > panel2.position.y) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     resize(width, height) {
@@ -206,12 +210,12 @@ class Engine {
 
         // Background
 
-        this.ctx.fillStyle = "#333333";
-        this.ctx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
+        // this.ctx.fillStyle = "#333333";
+        // this.ctx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
 
         // map
 
-        this.map.drawMiniature();
+        this.map.renderMiniMap();
     }
 
     debugText(text, pos = 15) {

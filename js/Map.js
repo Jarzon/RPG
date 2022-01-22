@@ -1,9 +1,24 @@
 class Map {
     constructor(ctx, view) {
+        let self = this;
         this.ctx = ctx;
         this.view = view;
         this.size = 200;
+        this.miniMapTileSize = 5;
         this.engine = null;
+        this.worker = new Worker("/js/MapWorker.js");
+
+        setTimeout(function () {
+            self.worker.addEventListener('message', function (e) {
+
+                if(e.data.type === 'minimap') {
+                    self.drawMinimap(e.data);
+                }
+                if(e.data.type === 'background') {
+                    self.drawBackground(e.data);
+                }
+            });
+        }, 100);
 
         this.map = [this.size];
         for(let x = 0; x < this.size; x++) {
@@ -12,8 +27,8 @@ class Map {
 
         this.mapTilesSize = 25;
 
-         this.sprites = {
-            'earth': {src: 'earth.png', img: {}, color: 'rgb(96,93,0)'},
+        this.sprites = {
+            'earth': {src: 'earth.png', img: {}, color: 'rgb(96,66,0)'},
             'green': {src: 'green.png', img: {}, color: 'rgb(31,148,0)'}
         };
 
@@ -39,62 +54,68 @@ class Map {
 
     setEngine(engine) {
         this.engine = engine;
+        this.worker.postMessage({
+            type: 'data',
+            mapSize: this.size,
+            minimapTileSize: this.miniMapTileSize,
+            mapTilesSize: this.mapTilesSize,
+            world: JSON.parse(JSON.stringify(this.engine.world)),
+            map: JSON.parse(JSON.stringify(this.map)),
+            sprites: JSON.parse(JSON.stringify(this.sprites))
+        });
     }
 
-    drawBackground() {
-        let width = Math.min(this.size, (this.view.position.x + this.view.width) / this.mapTilesSize);
-        let height = Math.min(this.size, (this.view.position.y + (this.view.height - this.size)) / this.mapTilesSize);
+    renderBrackground() {
+        this.worker.postMessage({
+            type: 'data',
+            view: this.view
+        });
+        this.worker.postMessage({
+            type: 'background'
+        });
+    }
 
-        for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
-            for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
-                this.ctx.setTransform(
-                    1, 0, 0, 1,
-                    ((x * this.mapTilesSize) - this.view.position.x) - this.mapTilesSize,
-                    ((y * this.mapTilesSize) - this.view.position.y) - this.mapTilesSize
-                );
-                this.ctx.drawImage(this.sprites[this.map[x][y]].img, this.mapTilesSize, this.mapTilesSize);
-            }
+    drawBackground(data) {
+        this.ctx.clearRect(0, 0, this.view.width, this.view.height - this.size);
+        for (let n = 0; n < data.tiles.length; n++) {
+            this.ctx.setTransform(
+                1, 0, 0, 1,
+                data.tiles[n].x,
+                data.tiles[n].y
+            );
+            this.ctx.drawImage(this.sprites[data.tiles[n].img].img, this.mapTilesSize, this.mapTilesSize);
         }
 
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
-    drawMiniature() {
+    renderMiniMap() {
+        this.worker.postMessage({
+            type: 'minimap'
+        });
+    }
+
+    drawMinimap(data) {
+        let boxHeight = 200;
+
+        // Background
+
+        this.ctx.fillStyle = "#333333";
+        this.ctx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
+
         let miniMapPosX = this.view.width - this.size;
         let miniMapPosY = this.view.height - this.size;
 
-        let minimapTileSize = 5;
+        // tiles
+        for (let n = 0; n < data.tiles.length; n++) {
+            this.ctx.fillStyle = data.tiles[n].color;
 
-        for (let x = 0; x < this.size; x += minimapTileSize) {
-            let xp = x * this.mapTilesSize;
-            for (let y = 0; y < this.size; y += minimapTileSize) {
-                let color = null;
-                let yp = y * this.mapTilesSize;
-
-                for(let n = 0; n < this.engine.world.length; n++) {
-                    let entity = this.engine.world[n];
-                    if (
-                        entity.position.x > xp && entity.position.x < xp + this.mapTilesSize * minimapTileSize
-                        && entity.position.y > yp && entity.position.y < yp + this.mapTilesSize * minimapTileSize
-                    ) {
-                        color = 'rgb(0,0,255)';
-                        break;
-                    }
-                }
-
-                if (color === null) {
-                    color = this.sprites[this.map[x][y]].color;
-                }
-
-                this.ctx.fillStyle = color;
-
-                this.ctx.fillRect(
-                    miniMapPosX + x,
-                    miniMapPosY + y,
-                    minimapTileSize,
-                    minimapTileSize
-                );
-            }
+            this.ctx.fillRect(
+                data.tiles[n].x,
+                data.tiles[n].y,
+                data.tiles[n].width,
+                data.tiles[n].height
+            );
         }
 
         // camera
