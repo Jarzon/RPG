@@ -15,6 +15,7 @@ class Entity {
 
         this.image = image;
         this.ctx = ctx;
+        this.selected = false;
     }
 
     distance(position) {
@@ -28,6 +29,14 @@ class Entity {
 
     display(position) {
         if (this.imgReady) {
+            if(this.selected) {
+                this.ctx.beginPath();
+                this.ctx.ellipse(position.x, position.y + this.height / 2, 20, 10, 2 * Math.PI, 2 * Math.PI, false);
+                this.ctx.lineWidth = 2;
+                this.ctx.strokeStyle = '#ffffff';
+                this.ctx.stroke();
+            }
+
             this.ctx.setTransform(1, 0, 0, 1, position.x, position.y);
             this.ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
             this.ctx.setTransform(1,0,0,1,0,0);
@@ -43,5 +52,9 @@ class Entity {
             && y > this.position.y - this.width
             && x < (this.position.x + this.height)
             && y < (this.position.y + this.width);
+    }
+
+    select() {
+        this.selected = true;
     }
 }

@@ -86,7 +86,7 @@ class MapWorker {
     }
 
     minimap(data) {
-        let miniMapPosX = this.view.width - this.mapSize;
+        let miniMapPosX = this.view.width - 1 - this.mapSize;
         let miniMapPosY = 0;
 
         let tiles = [];
