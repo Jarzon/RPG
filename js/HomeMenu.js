@@ -82,6 +82,8 @@ class HomeMenu {
     }
 
     draw() {
+        this.drawBackground();
+
         for(let text of this.menu) {
             text.displayTextbox();
             text.mouseCollision(this.controls);
@@ -90,7 +92,7 @@ class HomeMenu {
 
     drawBackground()
     {
-        ctx.fillStyle = 'hsl(212, 50%, 30%)';
+        this.ctx.fillStyle = 'hsl(212, 50%, 30%)';
 
         this.ctx.fillRect(
             0,

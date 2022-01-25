@@ -1,9 +1,11 @@
 class Map {
-    constructor(ctx, view) {
+    constructor(deckCtx, viewCtx, view) {
         let self = this;
-        this.ctx = ctx;
+        this.deckCtx = deckCtx;
+        this.viewCtx = viewCtx;
         this.view = view;
         this.size = 200;
+        this.mapTilesSize = 50;
         this.miniMapTileSize = 5;
         this.engine = null;
         this.worker = new Worker("/js/MapWorker.js");
@@ -24,8 +26,6 @@ class Map {
         for(let x = 0; x < this.size; x++) {
             this.map[x] = [this.size];
         }
-
-        this.mapTilesSize = 25;
 
         this.sprites = {
             'earth': {src: 'earth.png', img: {}, color: 'rgb(96,66,0)'},
@@ -65,28 +65,29 @@ class Map {
         });
     }
 
-    renderBrackground() {
+    renderBrackground(screenSection) {
         this.worker.postMessage({
             type: 'data',
             view: this.view
         });
         this.worker.postMessage({
-            type: 'background'
+            type: 'background',
+            screenSection: screenSection
         });
     }
 
     drawBackground(data) {
-        this.ctx.clearRect(0, 0, this.view.width, this.view.height - this.size);
+        this.viewCtx.clearRect(0, 0, this.view.width, this.view.height - this.size);
         for (let n = 0; n < data.tiles.length; n++) {
-            this.ctx.setTransform(
+            this.viewCtx.setTransform(
                 1, 0, 0, 1,
                 data.tiles[n].x,
                 data.tiles[n].y
             );
-            this.ctx.drawImage(this.sprites[data.tiles[n].img].img, this.mapTilesSize, this.mapTilesSize);
+            this.viewCtx.drawImage(this.sprites[data.tiles[n].img].img, this.mapTilesSize, this.mapTilesSize);
         }
 
-        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.viewCtx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     renderMiniMap() {
@@ -100,17 +101,17 @@ class Map {
 
         // Background
 
-        this.ctx.fillStyle = "#333333";
-        this.ctx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
+        this.deckCtx.fillStyle = "#333333";
+        this.deckCtx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
 
         let miniMapPosX = this.view.width - this.size;
-        let miniMapPosY = this.view.height - this.size;
+        let miniMapPosY = 0;
 
         // tiles
         for (let n = 0; n < data.tiles.length; n++) {
-            this.ctx.fillStyle = data.tiles[n].color;
+            this.deckCtx.fillStyle = data.tiles[n].color;
 
-            this.ctx.fillRect(
+            this.deckCtx.fillRect(
                 data.tiles[n].x,
                 data.tiles[n].y,
                 data.tiles[n].width,
@@ -119,13 +120,13 @@ class Map {
         }
 
         // camera
-        this.ctx.strokeStyle = "white";
-        this.ctx.lineWidth = 2;
+        this.deckCtx.strokeStyle = "white";
+        this.deckCtx.lineWidth = 2;
 
         let miniViewWidth = this.view.width / this.mapTilesSize;
         let miniViewHeight = this.view.height / this.mapTilesSize;
 
-        this.ctx.strokeRect(
+        this.deckCtx.strokeRect(
             this.minMax(miniMapPosX, miniMapPosX + this.size - miniViewWidth, miniMapPosX + Math.floor(this.view.position.x / this.mapTilesSize)),
             this.minMax(miniMapPosY, miniMapPosY + this.size - miniViewHeight, miniMapPosY + Math.floor(this.view.position.y / this.mapTilesSize)),
             miniViewWidth,

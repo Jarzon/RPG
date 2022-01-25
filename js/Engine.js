@@ -12,6 +12,7 @@ class Engine {
         this.controls = controls;
         this.homeMenu = homeMenu;
         this.freezeControlsFlag = false;
+        this.didAlreadyDraw = false;
 
         // Debug
 
@@ -34,14 +35,14 @@ class Engine {
     }
 
     tick(now) {
+        this.didAlreadyDraw = false;
         let delta = (now - this.lastCalledTime) / 1000;
         this.lastCalledTime = now;
         this.fps = 1 / delta;
 
         this.debugTextPoistion = 15;
-        this.draw();
         this.update();
-        this.debugText('FPS: ' + Math.floor(this.fps))
+        this.draw();
     }
 
     update() {
@@ -66,15 +67,15 @@ class Engine {
         }
     }
 
-    draw() {
-        //
+    draw(screenSection) {
+        if(this.didAlreadyDraw) return;
+
         if(this.state === 0) {
-            this.homeMenu.drawBackground();
             this.homeMenu.draw();
         }
         else if(this.state === 1) {
-            this.map.renderBrackground();
             this.mouseInteractions();
+            this.map.renderBrackground(screenSection);
             let self = this;
 
             // display entities
@@ -98,13 +99,14 @@ class Engine {
                 this.debugText('Debug Mode');
             }
         }
+        this.didAlreadyDraw = true;
     }
 
     mouseInteractions() {
         if(this.controls.key(MOUSE_LEFT)) {
             for(let n = 0; n < this.world.length; n++) {
                 if(this.world[n].isUnder(this.controls.mouse)) {
-
+                    this.world[n].select();
                 }
             }
         }
@@ -206,12 +208,10 @@ class Engine {
     }
 
     displayDeck() {
-        let boxHeight = 200;
-
         // Background
 
-        // this.ctx.fillStyle = "#333333";
-        // this.ctx.fillRect(0, this.view.height - (boxHeight), this.view.width, boxHeight);
+        this.ctx.fillStyle = "#333333";
+        this.ctx.fillRect(0, this.view.height - (this.map.size), this.view.width, this.map.size);
 
         // map
 

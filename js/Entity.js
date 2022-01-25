@@ -34,7 +34,7 @@ class Entity {
         }
     }
 
-    isUnder(x, y = null) {
+     isUnder(x, y = null) {
         if(y === null) {
             y = x.y;
             x = x.x;

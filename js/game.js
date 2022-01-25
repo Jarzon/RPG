@@ -1,7 +1,13 @@
 // Create the canvas
-let canvas = document.createElement("canvas");
-let ctx = canvas.getContext("2d");
-document.body.appendChild(canvas);
+let viewCanvas = document.createElement("canvas");
+viewCanvas.id = 'view';
+let viewCtx = viewCanvas.getContext("2d");
+
+let deckCanvas = document.createElement("canvas");
+deckCanvas.id = 'deck';
+let deckCtx = deckCanvas.getContext("2d");
+document.body.appendChild(viewCanvas);
+document.body.appendChild(deckCanvas);
 
 let WIDTH = 0;
 let HEIGHT = 0;
@@ -10,16 +16,19 @@ let controls = new Controls();
 
 let view = new Panel(0, 0, 0, 0);
 
-let map = new Map(ctx, view);
-let menu = new HomeMenu(ctx, controls);
-let engine = new Engine(ctx, view, map, controls, menu);
+let map = new Map(deckCtx, viewCtx, view);
+let menu = new HomeMenu(viewCtx, controls);
+let engine = new Engine(viewCtx, view, map, controls, menu);
 
 let setSize = function () {
     WIDTH = window.innerWidth;
     HEIGHT = window.innerHeight;
 
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
+    viewCanvas.width = WIDTH;
+    viewCanvas.height = HEIGHT;
+
+    deckCanvas.width = WIDTH;
+    deckCanvas.height = map.size;
 
     engine.resize(WIDTH, HEIGHT);
 };
@@ -30,8 +39,8 @@ window.addEventListener('resize', setSize);
 
 engine.initialize();
 
-let player = new Entity(window.innerWidth/2, window.innerHeight/2, 20, 38, ctx);
-let walker2 = new Entity(100, 100, 20, 38, ctx);
+let player = new Entity(window.innerWidth/2, window.innerHeight/2, 20, 38, viewCtx);
+let walker2 = new Entity(100, 100, 20, 38, viewCtx);
 
 engine.addEntity(player);
 engine.addEntity(walker2);

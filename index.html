@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="/img/stickman.png" />
+    <link rel="shortcut icon" href="/img/stickman.png">
     <title>Title</title>
 
     <style>
@@ -11,10 +11,17 @@
             overflow: hidden;
         }
 
-        canvas {
+        #view {
             position: fixed;
             left: 0;
             top: 0;
+        }
+
+        #deck {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 999;
         }
     </style>
 </head>

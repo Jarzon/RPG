@@ -61,17 +61,22 @@ class MapWorker {
         }
     }
 
-    background() {
+    background(screenSection = {}) {
+        let targetx = screenSection.x ?? this.view.position.x;
+        let targety = screenSection.y ?? this.view.position.y;
+        let viewwidth = screenSection.width ?? this.view.width;
+        let viewheight = screenSection.height ?? this.view.height;
+
         let tiles = [];
 
-        let width = Math.min(this.mapSize, (this.view.position.x + this.view.width) / this.mapTilesSize);
-        let height = Math.min(this.mapSize, (this.view.position.y + (this.view.height - this.mapSize)) / this.mapTilesSize);
+        let width = Math.min(this.mapSize, (targetx + viewwidth) / this.mapTilesSize);
+        let height = Math.min(this.mapSize, (targety + (viewheight - this.mapSize)) / this.mapTilesSize);
 
-        for(let x = Math.max(0, Math.floor(this.view.position.x / this.mapTilesSize)); x < width; x++) {
-            for(let y = Math.max(0, Math.floor(this.view.position.y / this.mapTilesSize)); y < height; y++) {
+        for(let x = Math.max(0, Math.floor(targetx / this.mapTilesSize)); x < width; x++) {
+            for(let y = Math.max(0, Math.floor(targety / this.mapTilesSize)); y < height; y++) {
                 tiles.push({
-                    x: ((x * this.mapTilesSize) - this.view.position.x) - this.mapTilesSize,
-                    y: ((y * this.mapTilesSize) - this.view.position.y) - this.mapTilesSize,
+                    x: ((x * this.mapTilesSize) - targetx) - this.mapTilesSize,
+                    y: ((y * this.mapTilesSize) - targety) - this.mapTilesSize,
                     img: this.map[x][y]
                 });
             }
@@ -82,7 +87,7 @@ class MapWorker {
 
     minimap(data) {
         let miniMapPosX = this.view.width - this.mapSize;
-        let miniMapPosY = this.view.height - this.mapSize;
+        let miniMapPosY = 0;
 
         let tiles = [];
 
