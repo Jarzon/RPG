@@ -12,9 +12,9 @@ document.body.appendChild(deckCanvas);
 let WIDTH = 0;
 let HEIGHT = 0;
 
-let controls = new Controls();
-
 let view = new Panel(0, 0, 0, 0);
+
+let controls = new Controls(view);
 
 let map = new Map(deckCtx, viewCtx, view);
 let menu = new HomeMenu(viewCtx, controls);
@@ -48,7 +48,7 @@ engine.addEntity(walker2);
 // Events
 
 document.onmousemove = function (event) {
-    controls.mouse.set(event.pageX, event.pageY);
+    controls.setMousePosition(event.pageX, event.pageY);
 };
 
 let mouseButtons = ['left', 'right', '', 'middle'];

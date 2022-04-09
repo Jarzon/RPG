@@ -1,5 +1,6 @@
 class Controls {
-    constructor() {
+    constructor(view) {
+        this.view = view;
         this.keys = {};
         this.keyFlags = {};
         this.mouse = new Vector(0, 0);
@@ -28,5 +29,9 @@ class Controls {
 
     keyup(key) {
         this.keys[key] = false;
+    }
+
+    setMousePosition(x, y) {
+        this.mouse.set(this.view.position.x + x, this.view.position.y +y);
     }
 }

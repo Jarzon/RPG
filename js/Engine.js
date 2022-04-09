@@ -105,9 +105,7 @@ class Engine {
     mouseInteractions() {
         if(this.controls.key(MOUSE_LEFT)) {
             for(let n = 0; n < this.world.length; n++) {
-                if(this.world[n].isUnder(this.controls.mouse)) {
-                    this.world[n].select();
-                }
+                this.world[n].select(this.world[n].isUnder(this.controls.mouse));
             }
         }
     }

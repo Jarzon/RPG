@@ -54,7 +54,7 @@ class Entity {
             && y < (this.position.y + this.width);
     }
 
-    select() {
-        this.selected = true;
+    select(selected) {
+        this.selected = selected;
     }
 }
