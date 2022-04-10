@@ -32,8 +32,26 @@ class Entity {
 
     move() {
         if(this.moveTo !== null) {
-            this.position = this.moveTo;
-            this.moveTo = null;
+            let x = 0;
+            let y = 0;
+            if(this.position.x < this.moveTo.x) {
+                x += 1;
+            }
+            else if(this.position.x > this.moveTo.x) {
+                x -= 1;
+            }
+            if(this.position.y < this.moveTo.y) {
+                y += 1;
+            }
+            else if(this.position.y > this.moveTo.y) {
+                y -= 1;
+            }
+            let movement = new Vector(x, y);
+            this.position.add(movement);
+
+            if(this.position.equals(this.moveTo)) {
+                this.moveTo = null;
+            }
         }
     }
 

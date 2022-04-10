@@ -7,6 +7,10 @@ class Vector {
         this.y = y || 0;
     }
 
+    equals(vector: Vector): boolean {
+        return this.x === vector.x && this.y === vector.y;
+    }
+
     add(vector: Vector) {
         this.x += vector.x;
         this.y += vector.y;

@@ -39,7 +39,7 @@ window.addEventListener('resize', setSize);
 
 engine.initialize();
 
-let player = new Entity(window.innerWidth/2, window.innerHeight/2, 75, 80, viewCtx);
+let player = new Entity(Math.round(window.innerWidth/2), Math.round(window.innerHeight/2), 75, 80, viewCtx);
 let walker2 = new Entity(100, 100, 75, 80, viewCtx);
 
 engine.addEntity(player);

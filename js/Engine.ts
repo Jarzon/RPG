@@ -4,7 +4,7 @@ class Engine {
     fps: number;
     view: Panel;
     map: any;
-    world: Array<any>;
+    world: Array<Entity>;
     ctx: any;
     controls: Controls;
     homeMenu: any;
