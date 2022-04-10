@@ -16,6 +16,7 @@ class Engine {
     textboxText: string;
     state: number;
     contextMenu: Vector = null;
+    selected: Entity = null;
 
     constructor(ctx: any, view: any, map: any, controls: Controls, homeMenu: any) {
         this.positions = [];
@@ -131,13 +132,14 @@ class Engine {
     mouseInteractions() {
         if(this.controls.key(MOUSE_LEFT)) {
             for(let n = 0; n < this.world.length; n++) {
-                this.world[n].select(this.world[n].isUnder(this.controls.mouse));
+                if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
+                    this.selected = this.world[n];
+                }
             }
         }
         else if(this.controls.key(MOUSE_RIGHT)) {
-            for(let n = 0; n < this.world.length; n++) {
-                if(!this.world[n].selected) continue;
-                this.world[n].moveTo = this.controls.mouse.clone();
+            if(this.selected !== null) {
+                this.selected.moveTo = this.controls.mouse.clone();
             }
         }
     }
@@ -239,9 +241,18 @@ class Engine {
 
     displayDeck() {
         // Background
+        let bottomPos = this.view.height - (this.map.size);
 
         this.ctx.fillStyle = "#333333";
-        this.ctx.fillRect(0, this.view.height - (this.map.size), this.view.width, this.map.size);
+        this.ctx.fillRect(0, bottomPos, this.view.width, this.map.size);
+
+        this.ctx.fillStyle = "#ffffff";
+        this.ctx.textAlign = "left";
+        let linePos = bottomPos + 30;
+        this.ctx.fillText('Nom : ' + this.selected.name, 20, linePos);
+        linePos += 30;
+        this.ctx.fillText('Vie : ' + this.selected.life + '/' + this.selected.maxLife, 20, linePos);
+        linePos += 30;
 
         // map
 

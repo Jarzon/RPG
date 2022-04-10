@@ -7,10 +7,17 @@ class Entity {
     imgReady: boolean
     selected: boolean;
     speed: number;
+    life: number;
+    maxLife: number;
     moveTo: Vector = null;
+    name: string;
+    direction: number = 1;
 
-    constructor(x: number, y: number, width: number, height: number, ctx: any) {
+    constructor(name: string, x: number, y: number, width: number, height: number, ctx: any) {
         this.position = new Vector(x, y);
+
+        this.name = name;
+        this.life = this.maxLife = 100;
 
         this.height = height;
         this.width = width;
@@ -36,9 +43,11 @@ class Entity {
             let y = 0;
             if(this.position.x < this.moveTo.x) {
                 x += 1;
+                this.direction = 1;
             }
             else if(this.position.x > this.moveTo.x) {
                 x -= 1;
+                this.direction = -1;
             }
             if(this.position.y < this.moveTo.y) {
                 y += 1;
@@ -74,7 +83,7 @@ class Entity {
                 this.ctx.stroke();
             }
 
-            this.ctx.setTransform(1, 0, 0, 1, position.x, position.y);
+            this.ctx.setTransform(this.direction, 0, 0, 1, position.x, position.y);
             this.ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
             this.ctx.setTransform(1,0,0,1,0,0);
         }
@@ -91,7 +100,7 @@ class Entity {
             && y < (this.position.y + this.width);
     }
 
-    select(selected: boolean) {
-        this.selected = selected;
+    select(selected: boolean): boolean {
+        return this.selected = selected;
     }
 }
