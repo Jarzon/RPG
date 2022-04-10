@@ -139,6 +139,16 @@ class Engine {
         }
         else if(this.controls.key(MOUSE_RIGHT)) {
             if(this.selected !== null) {
+                let target = null;
+                for(let n = 0; n < this.world.length; n++) {
+                    if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
+                        target = this.world[n];
+                        break;
+                    }
+                }
+                if(target !== null) {
+                    this.selected.target = target;
+                }
                 this.selected.moveTo = this.controls.mouse.clone();
             }
         }

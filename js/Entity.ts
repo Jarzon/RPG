@@ -6,14 +6,15 @@ class Entity {
     ctx: any;
     imgReady: boolean
     selected: boolean;
-    speed: number;
+    speed: number = 0;
     life: number;
     maxLife: number;
     moveTo: Vector = null;
     name: string;
     direction: number = 1;
+    target: Entity = null;
 
-    constructor(name: string, x: number, y: number, width: number, height: number, ctx: any) {
+    constructor(name: string, speed: number, imageFile: string, x: number, y: number, width: number, height: number, ctx: any) {
         this.position = new Vector(x, y);
 
         this.name = name;
@@ -28,17 +29,17 @@ class Entity {
         image.onload = function (self): any {
             self.imgReady = true;
         }(this);
-        image.src = "./img/stickman.png";
+        image.src = `./img/${imageFile}.png`;
 
         this.image = image;
         this.ctx = ctx;
         this.selected = false;
 
-        this.speed = 100;
+        this.speed = speed;
     }
 
     move() {
-        if(this.moveTo !== null) {
+        if(this.speed > 0 && this.moveTo !== null) {
             let x = 0;
             let y = 0;
             if(this.position.x < this.moveTo.x) {

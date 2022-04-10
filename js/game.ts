@@ -39,11 +39,13 @@ window.addEventListener('resize', setSize);
 
 engine.initialize();
 
-let player = new Entity('Petit con', Math.round(window.innerWidth/2), Math.round(window.innerHeight/2), 75, 80, viewCtx);
-let walker2 = new Entity('Abruti', 100, 100, 75, 80, viewCtx);
 
-engine.addEntity(player);
-engine.addEntity(walker2);
+engine.addEntity(new Entity('Petit con', 1, 'woman', Math.round(window.innerWidth/2), Math.round(window.innerHeight/2), 75, 80, viewCtx));
+engine.addEntity( new Entity('Abruti',1, 'woman',  100, 100, 75, 80, viewCtx));
+engine.addEntity( new Entity('Abruti',1, 'woman',  100, 100, 75, 80, viewCtx));
+engine.addEntity( new Entity('Abruti',1, 'woman',  100, 100, 75, 80, viewCtx));
+engine.addEntity( new Entity('Arbre',0, 'tree',  300, 300, 75, 80, viewCtx));
+
 
 // Events
 
