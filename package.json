@@ -1,0 +1,25 @@
+{
+  "name": "RPG",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "run": "tsc js/*.ts",
+    "test": "mocha -r ts-node/register test/*.ts --exit",
+    "compile": "./node_modules/.bin/tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jarzon/rpg.git"
+  },
+  "author": "Jason Vaillancourt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jarzon/rpg/issues"
+  },
+  "homepage": "https://github.com/Jarzon/rpg#readme"
+}

@@ -1,5 +1,22 @@
 class Engine {
-    constructor(ctx, view, map, controls, homeMenu) {
+    positions: Array<any>;
+    lastCalledTime: number;
+    fps: number;
+    view: Panel;
+    map: any;
+    world: Array<any>;
+    ctx: any;
+    controls: Controls;
+    homeMenu: any;
+    freezeControlsFlag: boolean;
+    didAlreadyDraw: boolean;
+    debug: boolean;
+    debugTextPoistion: number;
+    textboxFlag: boolean;
+    textboxText: string;
+    state: number;
+
+    constructor(ctx: any, view: any, map: any, controls: Controls, homeMenu: any) {
         this.positions = [];
         this.lastCalledTime = 0;
         this.fps = 0;
@@ -34,7 +51,7 @@ class Engine {
         this.homeMenu.initialize();
     }
 
-    tick(now) {
+    tick(now: number) {
         this.didAlreadyDraw = false;
         let delta = (now - this.lastCalledTime) / 1000;
         this.lastCalledTime = now;
@@ -67,7 +84,7 @@ class Engine {
         }
     }
 
-    draw(screenSection) {
+    draw(screenSection: any = undefined) {
         if(this.didAlreadyDraw) return;
 
         if(this.state === 0) {
@@ -110,7 +127,7 @@ class Engine {
         }
     }
 
-    getRelativePosition (entity) {
+    getRelativePosition (entity: any) {
         let pos = entity.position.clone();
 
         return pos.sub(this.view.position);
@@ -120,17 +137,17 @@ class Engine {
         this.debug = !this.debug;
     }
 
-    moveView(x, y) {
+    moveView(x: number, y: number) {
         let vector = new Vector(x, y);
 
         this.view.move(vector);
     }
 
-    addEntity(entity) {
+    addEntity(entity: any) {
         this.world.push(entity);
     }
 
-    move(entity, x, y) {
+    move(entity: any, x: number, y: number) {
         let vector = new Vector(x, y);
 
         let destination = entity.position.clone().add(vector);
@@ -140,7 +157,7 @@ class Engine {
         }
     }
 
-    walkable(destination) {
+    walkable(destination: any) {
         let count = this.world.length;
         for(let n = 0; n < count; n++) {
             let entity = this.world[n];
@@ -150,15 +167,15 @@ class Engine {
         return true;
     }
 
-    addCollisionPanel(panel) {
+    addCollisionPanel(panel: any) {
         return this.positions.push(panel) - 1;
     }
 
-    setCollisionPanel(index, panel) {
+    setCollisionPanel(index: number, panel: any) {
         this.positions[index] = panel;
     }
 
-    removeCollisionPanel(index) {
+    removeCollisionPanel(index: number) {
         this.positions[index] = undefined;
     }
 
@@ -170,12 +187,12 @@ class Engine {
         this.freezeControlsFlag = false;
     }
 
-    resize(width, height) {
+    resize(width: number, height: number) {
         this.view.resize(width, height);
         this.homeMenu.reinitialize();
     }
 
-    textbox(text) {
+    textbox(text: string) {
         this.freezeControls();
         this.textboxFlag = true;
         this.textboxText = text;
@@ -187,7 +204,7 @@ class Engine {
         this.textboxText = '';
     }
 
-    displayTextbox(text, margin = 20, borderSize = 5) {
+    displayTextbox(text: string, margin: number = 20, borderSize: number = 5) {
         let boxHeight = 100;
 
         // TODO: Align the text vertically
@@ -216,7 +233,7 @@ class Engine {
         this.map.renderMiniMap();
     }
 
-    debugText(text, pos = 15) {
+    debugText(text: string, pos: number = 15) {
         this.ctx.fillStyle = "#ffffff";
         this.ctx.font = "18px Helvetica";
         this.ctx.textAlign = "left";

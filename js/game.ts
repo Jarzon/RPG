@@ -90,7 +90,7 @@ const F9 = 'F9',
 
 let stopMain;
 
-let main = function (now) {
+let main = function (now: number = 0) {
     stopMain = window.requestAnimationFrame(main);
 
     engine.tick(now);

@@ -1,17 +1,20 @@
 class Panel {
-    constructor(x, y, width, height) {
+    position: Vector;
+    width: number;
+    height: number;
+    constructor(x: number, y: number, width: number, height: number) {
         this.position = new Vector(x, y);
 
         this.width = width || 0;
         this.height = height || 0;
     }
 
-    resize(width, height) {
+    resize(width: number, height: number) {
         this.width = width;
         this.height = height;
     }
 
-    move(vector) {
+    move(vector: Vector) {
         this.position.add(vector);
 
         return this;

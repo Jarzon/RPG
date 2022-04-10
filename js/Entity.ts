@@ -1,5 +1,13 @@
 class Entity {
-    constructor(x, y, width, height, ctx) {
+    position: Vector;
+    height: number;
+    width: number;
+    image: any
+    ctx: any;
+    imgReady: boolean
+    selected: boolean;
+
+    constructor(x: number, y: number, width: number, height: number, ctx: any) {
         this.position = new Vector(x, y);
 
         this.height = height;
@@ -8,7 +16,7 @@ class Entity {
         this.imgReady = false;
         let image = new Image();
 
-        image.onload = function (self) {
+        image.onload = function (self): any {
             self.imgReady = true;
         }(this);
         image.src = "./img/stickman.png";
@@ -18,7 +26,7 @@ class Entity {
         this.selected = false;
     }
 
-    distance(position) {
+    distance(position: any) {
         if(position instanceof Vector === false) {
             position = position.position;
         }
@@ -27,7 +35,7 @@ class Entity {
         return position.magnitude() - (this.height / 2);
     }
 
-    display(position) {
+    display(position: any) {
         if (this.imgReady) {
             if(this.selected) {
                 this.ctx.beginPath();
@@ -43,7 +51,7 @@ class Entity {
         }
     }
 
-     isUnder(x, y = null) {
+     isUnder(x: any, y:number = null) {
         if(y === null) {
             y = x.y;
             x = x.x;
@@ -54,7 +62,7 @@ class Entity {
             && y < (this.position.y + this.width);
     }
 
-    select(selected) {
+    select(selected: boolean) {
         this.selected = selected;
     }
 }

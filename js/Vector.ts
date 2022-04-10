@@ -1,24 +1,27 @@
 class Vector {
-    constructor(x, y) {
+    x: number;
+    y: number;
+
+    constructor(x: number, y: number) {
         this.x = x || 0;
         this.y = y || 0;
     }
 
-    add(vector) {
+    add(vector: Vector) {
         this.x += vector.x;
         this.y += vector.y;
 
         return this;
     }
 
-    sub(vector) {
+    sub(vector: Vector) {
         this.x -= vector.x;
         this.y -= vector.y;
 
         return this;
     }
 
-    divide(vector) {
+    divide(vector: Vector|number) {
         if (vector instanceof Vector) {
             if(vector.x !== 0) this.x /= vector.x;
             if(vector.y !== 0) this.y /= vector.y;
@@ -32,7 +35,7 @@ class Vector {
         return this;
     }
 
-    multiply(vector) {
+    multiply(vector: Vector|number) {
         if (vector instanceof Vector) {
             this.x *= vector.x;
             this.y *= vector.y;
@@ -44,7 +47,7 @@ class Vector {
         return this;
     }
 
-    dot(vector) {
+    dot(vector: Vector) {
         return (this.x * vector.x) + (this.y * vector.y);
     }
 
@@ -67,7 +70,7 @@ class Vector {
         return Math.sqrt(x * x + y * y);
     }
 
-    limit(value) {
+    limit(value: number) {
         if (this.magnitude() > value) {
             this.normalize();
             this.multiply(value);
@@ -78,7 +81,7 @@ class Vector {
         return new Vector(this.x, this.y);
     }
 
-    set(x, y) {
+    set(x: number, y: number) {
         this.x = x; this.y = y;
         return this;
     }

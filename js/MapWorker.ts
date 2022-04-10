@@ -1,10 +1,23 @@
 class Tile {
-    constructor(x, y, width, height, color) {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    color: string;
+    mapSize: any;
+    mapTilesSize: any;
+    minimapTileSize: any;
+
+    view: Panel;
+    world: any;
+    map: any;
+    sprites: any;
+
+    constructor(x: number, y: number, width: number, height: number, color: string) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
         this.color = color;
 
         this.mapSize = null;
@@ -19,22 +32,29 @@ class Tile {
 }
 
 class MapWorker {
+    view: Panel;
+    mapSize: any;
+    mapTilesSize: any;
+    minimapTileSize: any;
+    world: any;
+    map: any;
+    sprites: any;
+
     constructor() {
-        let self = this;
-        onmessage = function(e) {
+        onmessage = (e: MessageEvent) => {
             if(e.data.type === 'background') {
-                self.background(e.data);
+                this.background(e.data);
             }
             else if(e.data.type === 'minimap') {
-                self.minimap(e.data);
+                this.minimap(e.data);
             }
             else if(e.data.type === 'data') {
-                self.data(e.data);
+                this.data(e.data);
             }
         };
     }
 
-    data(data) {
+    data(data: any) {
         if(data.view !== undefined) {
             this.view = data.view;
         }
@@ -61,7 +81,7 @@ class MapWorker {
         }
     }
 
-    background(screenSection = {}) {
+    background(screenSection: any = {}) {
         let targetx = screenSection.x ?? this.view.position.x;
         let targety = screenSection.y ?? this.view.position.y;
         let viewwidth = screenSection.width ?? this.view.width;
@@ -85,7 +105,7 @@ class MapWorker {
         postMessage({type: 'background', 'tiles': tiles});
     }
 
-    minimap(data) {
+    minimap(data: any) {
         let miniMapPosX = this.view.width - 1 - this.mapSize;
         let miniMapPosY = 0;
 

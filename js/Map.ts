@@ -1,6 +1,16 @@
 class Map {
-    constructor(deckCtx, viewCtx, view) {
-        let self = this;
+    deckCtx: any
+    viewCtx: any
+    view: Panel;
+    size: any;
+    mapTilesSize: any;
+    miniMapTileSize: any;
+    engine: Engine;
+    worker: any;
+    map: any;
+    sprites: any;
+
+    constructor(deckCtx: any, viewCtx: any, view: Panel) {
         this.deckCtx = deckCtx;
         this.viewCtx = viewCtx;
         this.view = view;
@@ -10,14 +20,14 @@ class Map {
         this.engine = null;
         this.worker = new Worker("/js/MapWorker.js");
 
-        setTimeout(function () {
-            self.worker.addEventListener('message', function (e) {
+        setTimeout( () => {
+            this.worker.addEventListener('message', (e: any) => {
 
                 if(e.data.type === 'minimap') {
-                    self.drawMinimap(e.data);
+                    this.drawMinimap(e.data);
                 }
                 if(e.data.type === 'background') {
-                    self.drawBackground(e.data);
+                    this.drawBackground(e.data);
                 }
             });
         }, 100);
@@ -52,7 +62,7 @@ class Map {
         }
     }
 
-    setEngine(engine) {
+    setEngine(engine: Engine) {
         this.engine = engine;
         this.worker.postMessage({
             type: 'data',
@@ -65,7 +75,7 @@ class Map {
         });
     }
 
-    renderBrackground(screenSection) {
+    renderBrackground(screenSection: any) {
         this.worker.postMessage({
             type: 'data',
             view: this.view
@@ -76,7 +86,7 @@ class Map {
         });
     }
 
-    drawBackground(data) {
+    drawBackground(data: any) {
         this.viewCtx.clearRect(0, 0, this.view.width, this.view.height - this.size);
         for (let n = 0; n < data.tiles.length; n++) {
             this.viewCtx.setTransform(
@@ -96,7 +106,7 @@ class Map {
         });
     }
 
-    drawMinimap(data) {
+    drawMinimap(data: any) {
         let boxHeight = 200;
 
         // Background
@@ -134,15 +144,15 @@ class Map {
         );
     }
 
-    minMax(min, max, value) {
+    minMax(min: number, max: number, value: number) {
         return Math.min(max, Math.max(min, value));
     }
 
-    addMapTile(x, y, type) {
+    addMapTile(x: number, y: number, type: string) {
         this.map[x][y] = type;
     }
 
-    getRandomInt(min, max) {
+    getRandomInt(min: number, max: number) {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;

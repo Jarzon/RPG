@@ -1,5 +1,12 @@
 class TextElement {
-    constructor(text, x, y, callback, ctx) {
+    text: string;
+    callback: any;
+    selected: boolean;
+    ctx: any;
+    position: Vector;
+    dimension: Vector;
+
+    constructor(text: string, x: number, y: number, callback: any, ctx: any) {
         this.text = text;
         this.callback = callback;
         this.position = new Vector(x, y);
@@ -22,7 +29,7 @@ class TextElement {
         this.ctx.fillText(this.text, this.position.x, this.position.y);
     }
 
-    mouseCollision(controls) {
+    mouseCollision(controls: any) {
         this.selected = controls.mouse.x > this.position.x - this.dimension.x / 2
             && controls.mouse.y > this.position.y - this.dimension.y / 2
             && controls.mouse.x < (this.position.x + this.dimension.x / 2)
@@ -35,14 +42,20 @@ class TextElement {
 }
 
 class HomeMenu {
-    constructor(ctx, controls) {
+    ctx: any;
+    controls: any;
+    menuHeight: number;
+    menu: Array<any>;
+    engine: Engine;
+
+    constructor(ctx: any, controls: any) {
         this.ctx = ctx;
         this.controls = controls;
         this.menuHeight = 0;
         this.menu = [];
     }
 
-    addMenuElement(text, callback) {
+    addMenuElement(text: any, callback: any) {
         let el = new TextElement(
             text,
             this.engine.view.width/2,
@@ -77,7 +90,7 @@ class HomeMenu {
         });
     }
 
-    setEngine(engine) {
+    setEngine(engine: Engine) {
         this.engine = engine;
     }
 
