@@ -6,6 +6,8 @@ class Entity {
     ctx: any;
     imgReady: boolean
     selected: boolean;
+    speed: number;
+    moveTo: Vector = null;
 
     constructor(x: number, y: number, width: number, height: number, ctx: any) {
         this.position = new Vector(x, y);
@@ -24,6 +26,15 @@ class Entity {
         this.image = image;
         this.ctx = ctx;
         this.selected = false;
+
+        this.speed = 100;
+    }
+
+    move() {
+        if(this.moveTo !== null) {
+            this.position = this.moveTo;
+            this.moveTo = null;
+        }
     }
 
     distance(position: any) {

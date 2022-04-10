@@ -15,6 +15,7 @@ class Engine {
     textboxFlag: boolean;
     textboxText: string;
     state: number;
+    contextMenu: Vector = null;
 
     constructor(ctx: any, view: any, map: any, controls: Controls, homeMenu: any) {
         this.positions = [];
@@ -82,6 +83,11 @@ class Engine {
                 this.moveView(20, 0);
             }
         }
+
+        // animate enities
+        for(let n = 0; n < this.world.length; n++) {
+            this.world[n].move();
+        }
     }
 
     draw(screenSection: any = undefined) {
@@ -115,6 +121,9 @@ class Engine {
                 this.debugTextPoistion = 15;
                 this.debugText('Debug Mode');
             }
+            if(this.contextMenu !== null) {
+                this.showContextMenu();
+            }
         }
         this.didAlreadyDraw = true;
     }
@@ -123,6 +132,12 @@ class Engine {
         if(this.controls.key(MOUSE_LEFT)) {
             for(let n = 0; n < this.world.length; n++) {
                 this.world[n].select(this.world[n].isUnder(this.controls.mouse));
+            }
+        }
+        else if(this.controls.key(MOUSE_RIGHT)) {
+            for(let n = 0; n < this.world.length; n++) {
+                if(!this.world[n].selected) continue;
+                this.world[n].moveTo = this.controls.mouse.clone();
             }
         }
     }
@@ -239,5 +254,14 @@ class Engine {
         this.ctx.textAlign = "left";
         this.ctx.textBaseline = "middle";
         this.ctx.fillText(text, 10, pos);
+    }
+
+    showContextMenu() {
+        this.ctx.fillStyle = "#ffffff";
+        this.ctx.font = "18px Helvetica";
+        this.ctx.textAlign = "left";
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillRect(this.contextMenu.x, this.contextMenu.y, 100, 200);
+        //this.ctx.fillText(text, this.contextMenu.x, this.contextMenu.y);
     }
 }

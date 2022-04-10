@@ -39,22 +39,24 @@ window.addEventListener('resize', setSize);
 
 engine.initialize();
 
-let player = new Entity(window.innerWidth/2, window.innerHeight/2, 20, 38, viewCtx);
-let walker2 = new Entity(100, 100, 20, 38, viewCtx);
+let player = new Entity(window.innerWidth/2, window.innerHeight/2, 75, 80, viewCtx);
+let walker2 = new Entity(100, 100, 75, 80, viewCtx);
 
 engine.addEntity(player);
 engine.addEntity(walker2);
 
 // Events
 
+window.addEventListener("contextmenu", e => e.preventDefault());
+
 document.onmousemove = function (event) {
     controls.setMousePosition(event.pageX, event.pageY);
 };
 
-let mouseButtons = ['left', 'right', '', 'middle'];
+let mouseButtons = ['left', 'middle', 'right', ''];
 
 window.onmousedown = function(e) {
-    controls.keydown('mouse_' + mouseButtons[e.buttons-1]);
+    controls.keydown('mouse_' + mouseButtons[e.button]);
 };
 
 window.onmouseup = function(e) {
