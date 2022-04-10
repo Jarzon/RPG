@@ -87,7 +87,7 @@ class Engine {
 
         // animate enities
         for(let n = 0; n < this.world.length; n++) {
-            this.world[n].move();
+            this.world[n].think();
         }
     }
 
@@ -154,10 +154,10 @@ class Engine {
         }
     }
 
-    getRelativePosition (entity: any) {
+    getRelativePosition (entity: Entity) {
         let pos = entity.position.clone();
 
-        return pos.sub(this.view.position);
+        return pos.position.sub(this.view.position);
     }
 
     toggleDebug() {
@@ -174,13 +174,13 @@ class Engine {
         this.world.push(entity);
     }
 
-    move(entity: any, x: number, y: number) {
+    move(entity: Entity, x: number, y: number) {
         let vector = new Vector(x, y);
 
-        let destination = entity.position.clone().add(vector);
+        let destination = entity.position.position.clone().add(vector);
 
         if(this.walkable(destination)) {
-            entity.position.add(vector);
+            entity.position.position.add(vector);
         }
     }
 
@@ -259,10 +259,20 @@ class Engine {
         this.ctx.fillStyle = "#ffffff";
         this.ctx.textAlign = "left";
         let linePos = bottomPos + 30;
-        this.ctx.fillText('Nom : ' + this.selected.name, 20, linePos);
-        linePos += 30;
-        this.ctx.fillText('Vie : ' + this.selected.life + '/' + this.selected.maxLife, 20, linePos);
-        linePos += 30;
+        if(this.selected !== null) {
+            this.ctx.fillText('Nom : ' + this.selected.name, 20, linePos);
+            linePos += 30;
+            this.ctx.fillText('Vie : ' + this.selected.maxLife, 20, linePos);
+            linePos += 30;
+            this.ctx.fillText('Bois : ' + this.selected.resources.wood, 20, linePos);
+            linePos += 30;
+            this.ctx.fillText('Nourriture : ' + this.selected.resources.food, 20, linePos);
+            linePos += 30;
+            this.ctx.fillText('Pierres : ' + this.selected.resources.stone, 20, linePos);
+            linePos += 30;
+            this.ctx.fillText('Or : ' + this.selected.resources.gold, 20, linePos);
+            linePos += 30;
+        }
 
         // map
 

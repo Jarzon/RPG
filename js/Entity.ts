@@ -1,7 +1,5 @@
 class Entity {
-    position: Vector;
-    height: number;
-    width: number;
+    position: Panel;
     image: any
     ctx: any;
     imgReady: boolean
@@ -13,15 +11,14 @@ class Entity {
     name: string;
     direction: number = 1;
     target: Entity = null;
+    type: EntityType;
+    resources: Resources;
 
-    constructor(name: string, speed: number, imageFile: string, x: number, y: number, width: number, height: number, ctx: any) {
-        this.position = new Vector(x, y);
+    constructor(name: string, type: EntityType, speed: number, imageFile: string, x: number, y: number, width: number, height: number, ctx: any) {
+        this.position = new Panel(x, y, width, height);
 
         this.name = name;
         this.life = this.maxLife = 100;
-
-        this.height = height;
-        this.width = width;
 
         this.imgReady = false;
         let image = new Image();
@@ -36,30 +33,49 @@ class Entity {
         this.selected = false;
 
         this.speed = speed;
+        this.type = type;
+        this.resources = new Resources();
+    }
+
+    think() {
+        this.action();
+        this.move();
+    }
+
+    action() {
+        if(this.target !== null) {
+            if(this.position.colision(this.target.position)) {
+                // action
+                if(this.target.type === EntityType.Tree) {
+                    this.resources.wood += 1;
+                }
+            }
+        }
     }
 
     move() {
         if(this.speed > 0 && this.moveTo !== null) {
+            if(this.target !== null && this.position.colision(this.target.position)) return;
             let x = 0;
             let y = 0;
-            if(this.position.x < this.moveTo.x) {
+            if(this.position.position.x < this.moveTo.x) {
                 x += 1;
                 this.direction = 1;
             }
-            else if(this.position.x > this.moveTo.x) {
+            else if(this.position.position.x > this.moveTo.x) {
                 x -= 1;
                 this.direction = -1;
             }
-            if(this.position.y < this.moveTo.y) {
+            if(this.position.position.y < this.moveTo.y) {
                 y += 1;
             }
-            else if(this.position.y > this.moveTo.y) {
+            else if(this.position.position.y > this.moveTo.y) {
                 y -= 1;
             }
             let movement = new Vector(x, y);
-            this.position.add(movement);
+            this.position.position.add(movement);
 
-            if(this.position.equals(this.moveTo)) {
+            if(this.position.position.equals(this.moveTo)) {
                 this.moveTo = null;
             }
         }
@@ -71,14 +87,14 @@ class Entity {
         }
         position = position.clone();
         position.sub(this.position);
-        return position.magnitude() - (this.height / 2);
+        return position.magnitude() - (this.position.height / 2);
     }
 
     display(position: any) {
         if (this.imgReady) {
             if(this.selected) {
                 this.ctx.beginPath();
-                this.ctx.ellipse(position.x, position.y + this.height / 2, 20, 10, 2 * Math.PI, 2 * Math.PI, false);
+                this.ctx.ellipse(position.x, position.y + this.position.height / 2, 20, 10, 2 * Math.PI, 2 * Math.PI, false);
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeStyle = '#ffffff';
                 this.ctx.stroke();
@@ -95,10 +111,10 @@ class Entity {
             y = x.y;
             x = x.x;
         }
-        return x > this.position.x - this.height
-            && y > this.position.y - this.width
-            && x < (this.position.x + this.height)
-            && y < (this.position.y + this.width);
+        return x > this.position.position.x - this.position.height
+            && y > this.position.position.y - this.position.width
+            && x < (this.position.position.x + this.position.height)
+            && y < (this.position.position.y + this.position.width);
     }
 
     select(selected: boolean): boolean {

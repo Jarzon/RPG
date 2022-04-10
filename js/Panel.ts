@@ -9,6 +9,20 @@ class Panel {
         this.height = height || 0;
     }
 
+    colision(targetPanel: Panel): boolean
+    {
+        if(
+            this.position.x + this.width >= targetPanel.position.x
+            && this.position.x <= targetPanel.position.x + targetPanel.width
+            && this.position.y + this.height >= targetPanel.position.y
+            && this.position.y <= targetPanel.position.y + targetPanel.height
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     resize(width: number, height: number) {
         this.width = width;
         this.height = height;
