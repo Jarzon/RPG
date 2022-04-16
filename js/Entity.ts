@@ -90,19 +90,24 @@ class Entity {
         return position.magnitude() - (this.position.height / 2);
     }
 
-    display(position: any) {
+    display(position: any, debug: boolean = false) {
         if (this.imgReady) {
             if(this.selected) {
                 this.ctx.beginPath();
-                this.ctx.ellipse(position.x, position.y + this.position.height / 2, 20, 10, 2 * Math.PI, 2 * Math.PI, false);
+                this.ctx.ellipse(position.x + this.position.height / 2, position.y + this.position.height, 20, 10, 2 * Math.PI, 2 * Math.PI, false);
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeStyle = '#ffffff';
                 this.ctx.stroke();
             }
 
             this.ctx.setTransform(this.direction, 0, 0, 1, position.x, position.y);
-            this.ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
+            this.ctx.drawImage(this.image, this.direction >0? 0 : -this.position.width, 0);
             this.ctx.setTransform(1,0,0,1,0,0);
+
+            if(debug) {
+                this.ctx.strokeStyle = "#fff600";
+                this.ctx.strokeRect(position.x, position.y, this.position.width, this.position.height);
+            }
         }
     }
 
@@ -111,8 +116,8 @@ class Entity {
             y = x.y;
             x = x.x;
         }
-        return x > this.position.position.x - this.position.height
-            && y > this.position.position.y - this.position.width
+        return x > this.position.position.x
+            && y > this.position.position.y
             && x < (this.position.position.x + this.position.height)
             && y < (this.position.position.y + this.position.width);
     }

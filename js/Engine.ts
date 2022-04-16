@@ -116,7 +116,7 @@ class Engine {
 
                 n++;
 
-                entity.display(pos);
+                entity.display(pos, this.debug);
             });
 
             this.debugText('Nombre entité : ' + n)

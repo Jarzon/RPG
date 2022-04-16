@@ -3,7 +3,7 @@ class Map {
     viewCtx: any
     view: Panel;
     size: any;
-    mapTilesSize: any;
+    mapTilesSize: number;
     miniMapTileSize: any;
     engine: Engine;
     worker: any;
@@ -64,7 +64,7 @@ class Map {
 
         for(let i = 1; i < 100; i++)
         {
-            engine.addEntity(new Entity('', EntityType.Tree, 0, 'tree', this.getRandomInt(i, i* 100), this.getRandomInt(i, i* 100), 75, 80, this.engine.ctx));
+            engine.addEntity(new Entity('Arbre', EntityType.Tree, 0, 'tree', this.getRandomInt(i, i* 100), this.getRandomInt(i, i* 100), 75, 80, this.engine.ctx));
         }
     }
 
