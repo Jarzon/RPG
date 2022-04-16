@@ -41,7 +41,7 @@ class Map {
         }
 
         this.sprites = {
-            'earth': {src: 'earth.png', img: {}, color: 'rgb(96,66,0)'},
+            'earth': {src: 'earth.png', img: {}, color: 'rgb(31,148,0)'},
             'green': {src: 'green.png', img: {}, color: 'rgb(31,148,0)'}
         };
 
@@ -62,9 +62,10 @@ class Map {
             }
         }
 
+        // Spawn ressources randomly for now
         for(let i = 1; i < 100; i++)
         {
-            engine.addEntity(new Entity('Arbre', EntityType.Tree, 0, 'tree', this.getRandomInt(i, i* 100), this.getRandomInt(i, i* 100), 75, 80, this.engine.ctx));
+            engine.addEntity(new Tree(this.getRandomInt(i, i* 100), this.getRandomInt(i, i* 100), 75, 80, this.engine.ctx));
         }
     }
 

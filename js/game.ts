@@ -44,9 +44,8 @@ function getRandomInt(max: number) {
 }
 
 for(let i = 0; i < 10; i++) {
-    let ent = new Entity('Petit con #' + i, EntityType.Villager, 1, 'woman', 1000 + (i* 100), 1000, 70, 80, viewCtx);
+    let ent = new Villager('Petit con #' + i, EntityType.Villager, 1, 'woman', 1000 + (i* 100), 1000, 70, 80, viewCtx);
     engine.addEntity(ent);
-    //ent.moveTo = new Vector(getRandomInt(10000), getRandomInt(10000));
 }
 
 // Events

@@ -277,13 +277,16 @@ class Engine {
 
         this.ctx.fillStyle = "#ffffff";
         this.ctx.textAlign = "left";
+
         let linePos = bottomPos + 30;
         if(this.selected !== null) {
             this.ctx.fillText('Nom : ' + this.selected.name, 20, linePos);
             linePos += 30;
             this.ctx.fillText('Vie : ' + this.selected.maxLife, 20, linePos);
             linePos += 30;
-            this.ctx.fillText('Bois : ' + this.selected.resources.wood, 20, linePos);
+            let wood = this.selected.resources.wood;
+            if(!this.debug) wood = Math.ceil(wood);
+            this.ctx.fillText('Bois : ' + wood, 20, linePos);
             linePos += 30;
             this.ctx.fillText('Nourriture : ' + this.selected.resources.food, 20, linePos);
             linePos += 30;

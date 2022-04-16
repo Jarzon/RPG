@@ -47,7 +47,7 @@ class Entity {
             if(this.position.colision(this.target.position)) {
                 // action
                 if(this.target.type === EntityType.Tree) {
-                    this.resources.wood += 1;
+                    this.resources.wood += 0.005;
                 }
             }
         }
