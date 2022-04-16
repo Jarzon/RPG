@@ -104,11 +104,20 @@ class Engine {
 
             // display entities
 
-            this.world.forEach(function (entity) {
+            let n = 0;
+
+            this.world.forEach((entity:Entity) => {
+                if(!entity.position.colision(this.view)) {
+                    return;
+                }
                 let pos = self.getRelativePosition(entity);
+
+                n++;
 
                 entity.display(pos);
             });
+
+            this.debugText('Nombre entité : ' + n)
 
             if(this.textboxFlag) {
                 this.displayTextbox(this.textboxText);

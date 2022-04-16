@@ -53,7 +53,7 @@ class Entity {
         }
     }
 
-    move() {
+    protected move() {
         if(this.speed > 0 && this.moveTo !== null) {
             if(this.target !== null && this.position.colision(this.target.position)) return;
             let x = 0;

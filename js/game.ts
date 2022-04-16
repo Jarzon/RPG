@@ -39,12 +39,15 @@ window.addEventListener('resize', setSize);
 
 engine.initialize();
 
+function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+}
 
-engine.addEntity(new Entity('Petit con', EntityType.Villager, 1, 'woman', Math.round(window.innerWidth/2), Math.round(window.innerHeight/2), 75, 80, viewCtx));
-engine.addEntity( new Entity('Abruti', EntityType.Villager,1, 'woman',  100, 100, 75, 80, viewCtx));
-engine.addEntity( new Entity('Abruti', EntityType.Villager,1, 'woman',  100, 100, 75, 80, viewCtx));
-engine.addEntity( new Entity('Abruti', EntityType.Villager,1, 'woman',  100, 100, 75, 80, viewCtx));
-engine.addEntity( new Entity('Arbre', EntityType.Tree,0, 'tree',  300, 300, 75, 80, viewCtx));
+for(let i = 0; i < 3000; i++) {
+    let ent = new Entity('Petit con', EntityType.Villager, 1, 'woman', Math.round(window.innerWidth/2), Math.round(window.innerHeight/2), 75, 80, viewCtx);
+    engine.addEntity(ent);
+    ent.moveTo = new Vector(getRandomInt(10000), getRandomInt(10000));
+}
 
 // Events
 
