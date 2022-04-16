@@ -4,7 +4,8 @@ class Engine {
     fps: number;
     view: Panel;
     map: any;
-    world: Array<Entity>;
+    world: Array<Entity> = [];
+    worldView: Array<Entity> = [];
     ctx: any;
     controls: Controls;
     homeMenu: any;
@@ -25,7 +26,6 @@ class Engine {
 
         this.view = view;
         this.map = map;
-        this.world = [];
 
         this.ctx = ctx;
         this.controls = controls;
@@ -85,6 +85,8 @@ class Engine {
             }
         }
 
+        this.reorderWorldView();
+
         // animate enities
         for(let n = 0; n < this.world.length; n++) {
             this.world[n].think();
@@ -106,7 +108,7 @@ class Engine {
 
             let n = 0;
 
-            this.world.forEach((entity:Entity) => {
+            this.worldView.forEach((entity:Entity) => {
                 if(!entity.position.colision(this.view)) {
                     return;
                 }
@@ -181,6 +183,14 @@ class Engine {
 
     addEntity(entity: any) {
         this.world.push(entity);
+        this.worldView.push(entity);
+        this.reorderWorldView();
+    }
+
+    reorderWorldView() {
+        this.worldView.sort((a: Entity, b: Entity) => {
+            return a.position.position.y - b.position.position.y;
+        });
     }
 
     move(entity: Entity, x: number, y: number) {

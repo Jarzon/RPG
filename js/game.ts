@@ -43,8 +43,8 @@ function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
 }
 
-for(let i = 0; i < 3000; i++) {
-    let ent = new Entity('Petit con', EntityType.Villager, 1, 'woman', Math.round(window.innerWidth/2), Math.round(window.innerHeight/2), 75, 80, viewCtx);
+for(let i = 0; i < 1000; i++) {
+    let ent = new Entity('Petit con #' + i, EntityType.Villager, 1, 'woman', getRandomInt(10000), getRandomInt(10000), 75, 80, viewCtx);
     engine.addEntity(ent);
     ent.moveTo = new Vector(getRandomInt(10000), getRandomInt(10000));
 }
