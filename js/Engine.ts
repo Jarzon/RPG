@@ -157,7 +157,7 @@ class Engine {
                         break;
                     }
                 }
-                if(target !== null) {
+                if(target !== null && target !== this.selected) {
                     this.selected.target = target;
                 }
                 this.selected.moveTo = this.controls.mouse.clone();

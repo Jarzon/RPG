@@ -43,10 +43,10 @@ function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
 }
 
-for(let i = 0; i < 1000; i++) {
-    let ent = new Entity('Petit con #' + i, EntityType.Villager, 1, 'woman', getRandomInt(10000), getRandomInt(10000), 75, 80, viewCtx);
+for(let i = 0; i < 10; i++) {
+    let ent = new Entity('Petit con #' + i, EntityType.Villager, 1, 'woman', 1000 + (i* 100), 1000, 75, 80, viewCtx);
     engine.addEntity(ent);
-    ent.moveTo = new Vector(getRandomInt(10000), getRandomInt(10000));
+    //ent.moveTo = new Vector(getRandomInt(10000), getRandomInt(10000));
 }
 
 // Events
