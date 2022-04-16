@@ -119,8 +119,6 @@ class Engine {
                 entity.display(pos, this.debug);
             });
 
-            this.debugText('Nombre entité : ' + n)
-
             if(this.textboxFlag) {
                 this.displayTextbox(this.textboxText);
             }
@@ -132,6 +130,7 @@ class Engine {
             if(this.debug) {
                 this.debugTextPoistion = 15;
                 this.debugText('Debug Mode');
+                this.debugText('Nombre entité : ' + n)
             }
             if(this.contextMenu !== null) {
                 this.showContextMenu();
@@ -278,21 +277,20 @@ class Engine {
         this.ctx.fillStyle = "#ffffff";
         this.ctx.textAlign = "left";
 
+        const middleDeck = this.view.width / 4;
         let linePos = bottomPos + 30;
         if(this.selected !== null) {
-            this.ctx.fillText('Nom : ' + this.selected.name, 20, linePos);
+            this.ctx.fillText('Nom : ' + this.selected.name, middleDeck, linePos);
             linePos += 30;
-            this.ctx.fillText('Vie : ' + this.selected.maxLife, 20, linePos);
+            this.ctx.fillText('Vie : ' + this.selected.maxLife, middleDeck, linePos);
             linePos += 30;
-            let wood = this.selected.resources.wood;
-            if(!this.debug) wood = Math.ceil(wood);
-            this.ctx.fillText('Bois : ' + wood, 20, linePos);
+            this.ctx.fillText('Bois : ' + Math.ceil(this.selected.resources.wood), middleDeck, linePos);
             linePos += 30;
-            this.ctx.fillText('Nourriture : ' + this.selected.resources.food, 20, linePos);
+            this.ctx.fillText('Nourriture : ' + Math.ceil(this.selected.resources.food), middleDeck, linePos);
             linePos += 30;
-            this.ctx.fillText('Pierres : ' + this.selected.resources.stone, 20, linePos);
+            this.ctx.fillText('Pierres : ' + Math.ceil(this.selected.resources.stone), middleDeck, linePos);s
             linePos += 30;
-            this.ctx.fillText('Or : ' + this.selected.resources.gold, 20, linePos);
+            this.ctx.fillText('Or : ' + Math.ceil(this.selected.resources.gold), middleDeck, linePos);
             linePos += 30;
         }
 
@@ -301,12 +299,13 @@ class Engine {
         this.map.renderMiniMap();
     }
 
-    debugText(text: string, pos: number = 15) {
+    debugText(text: string, pos: number = null) {
         this.ctx.fillStyle = "#ffffff";
         this.ctx.font = "18px Helvetica";
         this.ctx.textAlign = "left";
         this.ctx.textBaseline = "middle";
-        this.ctx.fillText(text, 10, pos);
+        this.ctx.fillText(text, 10, pos ? pos : this.debugTextPoistion);
+        this.debugTextPoistion += 20;
     }
 
     showContextMenu() {
