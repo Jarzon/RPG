@@ -77,14 +77,19 @@ class HomeMenu {
     initialize() {
         let self = this;
         this.menuHeight = this.engine.view.height/3;
-        this.addMenuElement('Play', function () {
+
+        this.addMenuElement('Play', () => {
             self.engine.state = 1;
+            this.engine.map.generateMap();
+            this.engine.map.setEngine(this.engine);
         });
-        this.addMenuElement('Options', function () {
+
+        this.addMenuElement('Options', () => {
 
         });
-        this.addMenuElement('Quit', function () {
-            if(confirm('Etes vous sur de vouloir quitter ?')) {
+
+        this.addMenuElement('Quit',  () => {
+            if(confirm('Êtes vous sur de vouloir quitter ?')) {
                 window.close();
             }
         });

@@ -31,7 +31,10 @@ class Map {
                 }
             });
         }, 100);
+    }
 
+    generateMap(): void
+    {
         this.map = [this.size];
         for(let x = 0; x < this.size; x++) {
             this.map[x] = [this.size];
@@ -52,13 +55,16 @@ class Map {
             this.sprites[sprite].img = image;
         }
 
-        // Temp map
-
         let spritesList = ['earth', 'green'];
         for(let x = 0; x < this.size; x++) {
             for(let y = 0; y < this.size; y++) {
                 this.addMapTile(x, y, spritesList[this.getRandomInt(0, 2)]);
             }
+        }
+
+        for(let i = 1; i < 100; i++)
+        {
+            engine.addEntity(new Entity('', EntityType.Tree, 0, 'tree', this.getRandomInt(i, i* 100), this.getRandomInt(i, i* 100), 75, 80, this.engine.ctx));
         }
     }
 
@@ -70,8 +76,8 @@ class Map {
             minimapTileSize: this.miniMapTileSize,
             mapTilesSize: this.mapTilesSize,
             world: JSON.parse(JSON.stringify(this.engine.world)),
-            map: JSON.parse(JSON.stringify(this.map)),
-            sprites: JSON.parse(JSON.stringify(this.sprites))
+            map: this.map !== undefined? JSON.parse(JSON.stringify(this.map)) : {},
+            sprites: this.sprites !== undefined? JSON.parse(JSON.stringify(this.sprites)) : {}
         });
     }
 
@@ -152,7 +158,8 @@ class Map {
         this.map[x][y] = type;
     }
 
-    getRandomInt(min: number, max: number) {
+    getRandomInt(min: number, max: number): number
+    {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
