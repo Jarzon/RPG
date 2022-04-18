@@ -3,12 +3,14 @@ class Controls {
     keys: any;
     keyFlags: any;
     mouse: Vector;
+    absMouse: Vector;
 
     constructor(view: Panel) {
         this.view = view;
         this.keys = {};
         this.keyFlags = {};
         this.mouse = new Vector(0, 0);
+        this.absMouse = new Vector(0, 0);
     }
 
     keypress(key: string) {
@@ -37,6 +39,7 @@ class Controls {
     }
 
     setMousePosition(x: number, y: number) {
+        this.absMouse.set(x, y);
         this.mouse.set(this.view.position.x + x, this.view.position.y +y);
     }
 }

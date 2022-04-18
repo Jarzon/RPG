@@ -18,6 +18,7 @@ class Engine {
     state: number;
     contextMenu: Vector = null;
     selected: Entity = null;
+    menuPosition: number = 0;
 
     constructor(ctx: any, view: any, map: any, controls: Controls, homeMenu: any) {
         this.positions = [];
@@ -141,26 +142,30 @@ class Engine {
 
     mouseInteractions() {
         if(this.controls.key(MOUSE_LEFT)) {
-            for(let n = 0; n < this.world.length; n++) {
-                if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
-                    this.selected = this.world[n];
+            if(this.controls.absMouse.y >= this.menuPosition) {
+
+            } else {
+                for(let n = 0; n < this.world.length; n++) {
+                    if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
+                        this.selected = this.world[n];
+                    }
                 }
             }
         }
         else if(this.controls.key(MOUSE_RIGHT)) {
-            if(this.selected !== null) {
-                let target = null;
-                for(let n = 0; n < this.world.length; n++) {
-                    if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
-                        target = this.world[n];
-                        break;
-                    }
+            if(this.controls.absMouse.y >= this.menuPosition || this.selected === null) return;
+
+            let target = null;
+            for(let n = 0; n < this.world.length; n++) {
+                if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
+                    target = this.world[n];
+                    break;
                 }
-                if(target !== null && target !== this.selected) {
-                    this.selected.target = target;
-                }
-                this.selected.moveTo = this.controls.mouse.clone();
             }
+            if(target !== null && target !== this.selected) {
+                this.selected.target = target;
+            }
+            this.selected.moveTo = this.controls.mouse.clone();
         }
     }
 
@@ -269,10 +274,15 @@ class Engine {
 
     displayDeck() {
         // Background
-        let bottomPos = this.view.height - (this.map.size);
+        let bottomPos = this.menuPosition = this.view.height - (this.map.size);
 
         this.ctx.fillStyle = "#333333";
         this.ctx.fillRect(0, bottomPos, this.view.width, this.map.size);
+
+        if(this.selected instanceof Villager) {
+            this.ctx.strokeStyle = "#fff";
+            this.ctx.strokeRect(0, bottomPos, 40, 40);
+        }
 
         this.ctx.fillStyle = "#ffffff";
         this.ctx.textAlign = "left";
@@ -288,7 +298,7 @@ class Engine {
             linePos += 30;
             this.ctx.fillText('Nourriture : ' + Math.ceil(this.selected.resources.food), middleDeck, linePos);
             linePos += 30;
-            this.ctx.fillText('Pierres : ' + Math.ceil(this.selected.resources.stone), middleDeck, linePos);s
+            this.ctx.fillText('Pierres : ' + Math.ceil(this.selected.resources.stone), middleDeck, linePos);
             linePos += 30;
             this.ctx.fillText('Or : ' + Math.ceil(this.selected.resources.gold), middleDeck, linePos);
             linePos += 30;
