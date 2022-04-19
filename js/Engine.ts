@@ -19,6 +19,7 @@ class Engine {
     contextMenu: Vector = null;
     selected: Entity = null;
     menuPosition: number = 0;
+    menu: Array<TextElement> = [];
 
     constructor(ctx: any, view: any, map: any, controls: Controls, homeMenu: any) {
         this.positions = [];
@@ -45,13 +46,17 @@ class Engine {
         this.textboxText = '';
 
         this.state = 0;
-
-        map.setEngine(this);
         homeMenu.setEngine(this);
+        map.setEngine(this);
     }
 
     initialize() {
         this.homeMenu.initialize();
+        this.menuPosition = this.view.height - (this.map.size);
+
+        this.menu.push(new TextElement('Forum', 'left', 20, this.menuPosition + 21, () => {
+           this.debugText('ASDFASFAS')
+        }, this.ctx))
     }
 
     tick(now: number) {
@@ -131,7 +136,7 @@ class Engine {
             if(this.debug) {
                 this.debugTextPoistion = 15;
                 this.debugText('Debug Mode');
-                this.debugText('Nombre entité : ' + n)
+                this.debugText('Nombre entité : ' + n);
             }
             if(this.contextMenu !== null) {
                 this.showContextMenu();
@@ -141,31 +146,45 @@ class Engine {
     }
 
     mouseInteractions() {
-        if(this.controls.key(MOUSE_LEFT)) {
-            if(this.controls.absMouse.y >= this.menuPosition) {
-
-            } else {
+        // Mouse is in the deck
+        if(this.controls.absMouse.y >= this.menuPosition) {
+            if(this.selected instanceof Villager) {
+                for(let menu of this.menu) {
+                    menu.mouseCollision(this.controls);
+                }
+            }
+        } else {
+            if(this.controls.key(MOUSE_LEFT)) {
+                // select entity
                 for(let n = 0; n < this.world.length; n++) {
                     if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
                         this.selected = this.world[n];
                     }
                 }
             }
+            else if(this.controls.key(MOUSE_RIGHT)) {
+                if(this.selected === null) return;
+
+                let target = null;
+                for(let n = 0; n < this.world.length; n++) {
+                    if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
+                        target = this.world[n];
+                        break;
+                    }
+                }
+                if(target !== null && target !== this.selected) {
+                    this.selected.target = target;
+                }
+                this.selected.moveTo = this.controls.mouse.clone();
+            }
+        }
+
+        if(this.controls.key(MOUSE_LEFT)) {
+            // Mouse is in the deck
+
         }
         else if(this.controls.key(MOUSE_RIGHT)) {
-            if(this.controls.absMouse.y >= this.menuPosition || this.selected === null) return;
 
-            let target = null;
-            for(let n = 0; n < this.world.length; n++) {
-                if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
-                    target = this.world[n];
-                    break;
-                }
-            }
-            if(target !== null && target !== this.selected) {
-                this.selected.target = target;
-            }
-            this.selected.moveTo = this.controls.mouse.clone();
         }
     }
 
@@ -279,12 +298,15 @@ class Engine {
         this.ctx.fillStyle = "#333333";
         this.ctx.fillRect(0, bottomPos, this.view.width, this.map.size);
 
+        this.ctx.strokeStyle = "#fff";
         if(this.selected instanceof Villager) {
-            this.ctx.strokeStyle = "#fff";
-            this.ctx.strokeRect(0, bottomPos, 40, 40);
+            for(let menu of this.menu) {
+                menu.displayTextbox();
+            }
         }
 
-        this.ctx.fillStyle = "#ffffff";
+        this.ctx.fillStyle = "#fff";
+
         this.ctx.textAlign = "left";
 
         const middleDeck = this.view.width / 4;

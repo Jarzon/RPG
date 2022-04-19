@@ -15,6 +15,7 @@ class HomeMenu {
     addMenuElement(text: any, callback: any) {
         let el = new TextElement(
             text,
+            'center',
             this.engine.view.width/2,
             this.menuHeight,
             callback,
