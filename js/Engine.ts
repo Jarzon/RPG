@@ -20,6 +20,7 @@ class Engine {
     selected: Entity = null;
     menuPosition: number = 0;
     menu: Array<TextElement> = [];
+    buildSelection: Entity;
 
     constructor(ctx: any, view: any, map: any, controls: Controls, homeMenu: any) {
         this.positions = [];
@@ -55,7 +56,7 @@ class Engine {
         this.menuPosition = this.view.height - (this.map.size);
 
         this.menu.push(new TextElement('Forum', 'left', 20, this.menuPosition + 21, () => {
-           this.debugText('ASDFASFAS')
+           this.buildSetup(new Building(0, 0, 80, 80, this.ctx));
         }, this.ctx))
     }
 
@@ -161,21 +162,28 @@ class Engine {
                         this.selected = this.world[n];
                     }
                 }
+                if(this.buildSelection !== null) {
+                    this.buildSelection = null;
+                }
             }
             else if(this.controls.key(MOUSE_RIGHT)) {
-                if(this.selected === null) return;
-
-                let target = null;
-                for(let n = 0; n < this.world.length; n++) {
-                    if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
-                        target = this.world[n];
-                        break;
+                if(this.buildSelection !== null) {
+                    this.build(this.buildSelection, this.controls.mouse);
+                    this.buildSelection = null;
+                }
+                else if(this.selected !== null) {
+                    let target = null;
+                    for(let n = 0; n < this.world.length; n++) {
+                        if(this.world[n].select(this.world[n].isUnder(this.controls.mouse))) {
+                            target = this.world[n];
+                            break;
+                        }
                     }
+                    if(target !== null && target !== this.selected) {
+                        this.selected.target = target;
+                    }
+                    this.selected.moveTo = this.controls.mouse.clone();
                 }
-                if(target !== null && target !== this.selected) {
-                    this.selected.target = target;
-                }
-                this.selected.moveTo = this.controls.mouse.clone();
             }
         }
 
@@ -289,6 +297,18 @@ class Engine {
         this.ctx.textAlign = "center";
         this.ctx.textBaseline = "middle";
         this.ctx.fillText(text, this.view.width/2, this.view.height - 75);
+    }
+
+    buildSetup(building: Entity)
+    {
+        this.buildSelection = building;
+    }
+
+    build(building: Entity, mouse: Vector)
+    {
+        building.position.position.x = mouse.x;
+        building.position.position.y = mouse.y;
+        this.addEntity(building);
     }
 
     displayDeck() {

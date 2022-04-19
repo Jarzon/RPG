@@ -88,7 +88,7 @@ class Entity {
         if (this.imgReady) {
             if(this.selected) {
                 this.ctx.beginPath();
-                this.ctx.ellipse(position.x + this.position.height / 2, position.y + this.position.height, 20, 10, 2 * Math.PI, 2 * Math.PI, false);
+                this.ctx.ellipse(position.x + this.position.height / 2, position.y + this.position.height, this.position.width / 2, this.position.width / 4, 2 * Math.PI, 2 * Math.PI, false);
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeStyle = '#ffffff';
                 this.ctx.stroke();

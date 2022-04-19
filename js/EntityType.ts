@@ -1,4 +1,5 @@
 enum EntityType {
     Tree = 0,
-    Villager = 1
+    Villager = 1,
+    Building= 2
 }
