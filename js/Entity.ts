@@ -11,14 +11,26 @@ class Entity {
     name: string;
     direction: number = 1;
     target: Entity = null;
+    remainingBuild: number;
     type: EntityType;
-    resources: Resources;
 
-    constructor(name: string, type: EntityType, speed: number, imageFile: string, x: number, y: number, width: number, height: number, ctx: any) {
+    constructor(
+        name: string,
+        type: EntityType,
+        speed: number,
+        buildTime:number,
+        imageFile: string,
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        ctx: any
+    ) {
         this.position = new Panel(x, y, width, height);
 
         this.name = name;
         this.life = this.maxLife = 100;
+        this.remainingBuild = buildTime;
 
         this.imgReady = false;
         let image = new Image();
@@ -34,7 +46,6 @@ class Entity {
 
         this.speed = speed;
         this.type = type;
-        this.resources = new Resources();
     }
 
     think() {

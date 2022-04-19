@@ -56,7 +56,7 @@ class Engine {
         this.menuPosition = this.view.height - (this.map.size);
 
         this.menu.push(new TextElement('Forum', 'left', 20, this.menuPosition + 21, () => {
-           this.buildSetup(new Building(0, 0, 80, 80, this.ctx));
+           this.buildSetup(new Building(100, 0, 80, 80, 100, this.ctx));
         }, this.ctx))
     }
 
@@ -309,6 +309,7 @@ class Engine {
         building.position.position.x = mouse.x;
         building.position.position.y = mouse.y;
         this.addEntity(building);
+        this.selected.target = building;
     }
 
     displayDeck() {
@@ -334,16 +335,22 @@ class Engine {
         if(this.selected !== null) {
             this.ctx.fillText('Nom : ' + this.selected.name, middleDeck, linePos);
             linePos += 30;
-            this.ctx.fillText('Vie : ' + this.selected.maxLife, middleDeck, linePos);
-            linePos += 30;
-            this.ctx.fillText('Bois : ' + Math.ceil(this.selected.resources.wood), middleDeck, linePos);
-            linePos += 30;
-            this.ctx.fillText('Nourriture : ' + Math.ceil(this.selected.resources.food), middleDeck, linePos);
-            linePos += 30;
-            this.ctx.fillText('Pierres : ' + Math.ceil(this.selected.resources.stone), middleDeck, linePos);
-            linePos += 30;
-            this.ctx.fillText('Or : ' + Math.ceil(this.selected.resources.gold), middleDeck, linePos);
-            linePos += 30;
+            if(this.selected instanceof Villager) {
+                this.ctx.fillText('Vie : ' + this.selected.maxLife, middleDeck, linePos);
+                linePos += 30;
+                this.ctx.fillText('Bois : ' + Math.ceil(this.selected.resources.wood), middleDeck, linePos);
+                linePos += 30;
+                this.ctx.fillText('Nourriture : ' + Math.ceil(this.selected.resources.food), middleDeck, linePos);
+                linePos += 30;
+                this.ctx.fillText('Pierres : ' + Math.ceil(this.selected.resources.stone), middleDeck, linePos);
+                linePos += 30;
+                this.ctx.fillText('Or : ' + Math.ceil(this.selected.resources.gold), middleDeck, linePos);
+                linePos += 30;
+            }
+            if(this.selected instanceof Building && this.selected.remainingBuild > 0) {
+                this.ctx.fillText('Construction : ' + Math.ceil(this.selected.remainingBuild), middleDeck, linePos);
+                linePos += 30;
+            }
         }
 
         // map
