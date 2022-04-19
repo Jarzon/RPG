@@ -54,10 +54,15 @@ class Engine {
     initialize() {
         this.homeMenu.initialize();
         this.menuPosition = this.view.height - (this.map.size);
+        this.buildVillagerMenu();
+    }
 
-        this.menu.push(new TextElement('Forum', 'left', 20, this.menuPosition + 21, () => {
-           this.buildSetup(new Building(100, 0, 80, 80, 100, this.ctx));
-        }, this.ctx))
+    buildVillagerMenu() {
+        this.menu = [
+            new TextElement('Forum', 'left', 20, this.menuPosition + 21, () => {
+                this.buildSetup(new Building(100, 0, 80, 80, 100, this.ctx));
+            }, this.ctx)
+        ];
     }
 
     tick(now: number) {
@@ -348,7 +353,8 @@ class Engine {
                 linePos += 30;
             }
             if(this.selected instanceof Building && this.selected.remainingBuild > 0) {
-                this.ctx.fillText('Construction : ' + Math.ceil(this.selected.remainingBuild), middleDeck, linePos);
+
+                this.ctx.fillText('Construction : ' + this.selected.getRemaingBuild(), middleDeck, linePos);
                 linePos += 30;
             }
         }

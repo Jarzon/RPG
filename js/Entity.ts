@@ -12,6 +12,7 @@ class Entity {
     direction: number = 1;
     target: Entity = null;
     remainingBuild: number;
+    initialBuild: number;
     type: EntityType;
 
     constructor(
@@ -30,7 +31,7 @@ class Entity {
 
         this.name = name;
         this.life = this.maxLife = 100;
-        this.remainingBuild = buildTime;
+        this.initialBuild = this.remainingBuild = buildTime;
 
         this.imgReady = false;
         let image = new Image();

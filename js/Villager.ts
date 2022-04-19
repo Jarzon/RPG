@@ -16,6 +16,10 @@ class Villager extends Entity {
                 }
                 else if(this.target.type === EntityType.Building) {
                     this.target.remainingBuild -= 0.05;
+                    if(this.target.remainingBuild <= 0) {
+                        this.target = null;
+                        this.moveTo = null;
+                    }
                 }
             }
         }

@@ -4,6 +4,11 @@ class Building extends Entity {
         super('Building', EntityType.Building, 0, buildTime, 'building', x, y, width, height, ctx);
     }
 
+    getRemaingBuild(): number
+    {
+        return -(Math.ceil(this.remainingBuild) - this.initialBuild);
+    }
+
     action() {}
 
     move() {}
