@@ -1,46 +1,3 @@
-class TextElement {
-    text: string;
-    callback: any;
-    selected: boolean;
-    ctx: any;
-    position: Vector;
-    dimension: Vector;
-
-    constructor(text: string, x: number, y: number, callback: any, ctx: any) {
-        this.text = text;
-        this.callback = callback;
-        this.position = new Vector(x, y);
-        this.selected = false;
-
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "30px Helvetica";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        let dim = ctx.measureText(text);
-        this.ctx = ctx;
-        this.dimension = new Vector(dim.width, 35);
-    }
-
-    displayTextbox() {
-        this.ctx.fillStyle = this.selected? "#9200ff": "#ffffff";
-        this.ctx.font = "30px Helvetica";
-        this.ctx.textAlign = "center";
-        this.ctx.textBaseline = "middle";
-        this.ctx.fillText(this.text, this.position.x, this.position.y);
-    }
-
-    mouseCollision(controls: any) {
-        this.selected = controls.mouse.x > this.position.x - this.dimension.x / 2
-            && controls.mouse.y > this.position.y - this.dimension.y / 2
-            && controls.mouse.x < (this.position.x + this.dimension.x / 2)
-            && controls.mouse.y < (this.position.y + this.dimension.y / 2);
-
-        if(this.selected && controls.key(MOUSE_LEFT)) {
-            this.callback();
-        }
-    }
-}
-
 class HomeMenu {
     ctx: any;
     controls: any;
@@ -66,7 +23,7 @@ class HomeMenu {
 
         this.menu.push(el);
 
-        this.menuHeight += el.dimension.y;
+        this.menuHeight += el.position.height;
     }
 
     reinitialize() {

@@ -6,4 +6,8 @@ class Tree extends Entity {
     action() {
         return;
     }
+
+    move() {
+        return;
+    }
 }

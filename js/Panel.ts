@@ -11,16 +11,18 @@ class Panel {
 
     colision(targetPanel: Panel): boolean
     {
-        if(
-            this.position.x + this.width >= targetPanel.position.x
+        return this.position.x + this.width >= targetPanel.position.x
             && this.position.x <= targetPanel.position.x + targetPanel.width
             && this.position.y + this.height >= targetPanel.position.y
-            && this.position.y <= targetPanel.position.y + targetPanel.height
-        ) {
-            return true;
-        }
+            && this.position.y <= targetPanel.position.y + targetPanel.height;
+    }
 
-        return false;
+    vectorColision(target: Vector): boolean
+    {
+        return target.x > this.position.x - this.width
+            && target.y > this.position.y - this.height
+            && target.x < this.position.x + this.width
+            && target.y < this.position.y + this.height;
     }
 
     resize(width: number, height: number) {

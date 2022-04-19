@@ -42,42 +42,36 @@ class Entity {
         this.move();
     }
 
-    action() {
-        if(this.target !== null) {
-            if(this.position.colision(this.target.position)) {
-                // action
-                if(this.target.type === EntityType.Tree) {
-                    this.resources.wood += 0.005;
-                }
-            }
-        }
-    }
+    action() {}
 
     protected move() {
-        if(this.speed > 0 && this.moveTo !== null) {
-            if(this.target !== null && this.position.colision(this.target.position)) return;
-            let x = 0;
-            let y = 0;
-            if(this.position.position.x < this.moveTo.x) {
-                x += 1;
-                this.direction = 1;
-            }
-            else if(this.position.position.x > this.moveTo.x) {
-                x -= 1;
-                this.direction = -1;
-            }
-            if(this.position.position.y < this.moveTo.y) {
-                y += 1;
-            }
-            else if(this.position.position.y > this.moveTo.y) {
-                y -= 1;
-            }
-            let movement = new Vector(x, y);
-            this.position.position.add(movement);
+        if(this.moveTo === null) {
+            return;
+        }
 
-            if(this.position.position.equals(this.moveTo)) {
-                this.moveTo = null;
-            }
+        if(this.target !== null && this.position.colision(this.target.position)) return;
+
+        let x = 0;
+        let y = 0;
+        if(this.position.position.x < this.moveTo.x) {
+            x += 1;
+            this.direction = 1;
+        }
+        else if(this.position.position.x > this.moveTo.x) {
+            x -= 1;
+            this.direction = -1;
+        }
+        if(this.position.position.y < this.moveTo.y) {
+            y += 1;
+        }
+        else if(this.position.position.y > this.moveTo.y) {
+            y -= 1;
+        }
+        let movement = new Vector(x, y);
+        this.position.position.add(movement);
+
+        if(this.position.position.equals(this.moveTo)) {
+            this.moveTo = null;
         }
     }
 
