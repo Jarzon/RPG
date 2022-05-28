@@ -59,7 +59,7 @@ class Engine {
 
     buildVillagerMenu() {
         this.menu = [
-            new TextElement('Forum', 'left', 20, this.menuPosition + 21, () => {
+            new TextElement('Forum', 'left', 20, this.menuPosition + 40, () => {
                 this.buildSetup(new Building(100, 0, 80, 80, 100, this.ctx));
             }, this.ctx)
         ];

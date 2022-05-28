@@ -6,7 +6,7 @@ class TextElement {
     position: Panel;
     align: string;
 
-    constructor(text: string, align: string, x: number, y: number, callback: any, ctx: any) {
+    constructor(text: string, align: string, x: number, y: number, callback: any, ctx: any, padding: number = 0) {
         this.text = text;
         this.callback = callback;
         this.selected = false;
@@ -18,7 +18,7 @@ class TextElement {
         ctx.textBaseline = "middle";
         let dim = ctx.measureText(text);
         this.ctx = ctx;
-        this.position = new Panel(x, y, dim.width, dim.fontBoundingBoxAscent + dim.fontBoundingBoxDescent);
+        this.position = new Panel(x, y, dim.width, dim.actualBoundingBoxAscent + dim.actualBoundingBoxDescent + padding);
     }
 
     displayTextbox() {

@@ -16,10 +16,11 @@ class HomeMenu {
         let el = new TextElement(
             text,
             'center',
-            this.engine.view.width/2,
+            this.engine.view.width / 2,
             this.menuHeight,
             callback,
-            this.ctx
+            this.ctx,
+            20
         );
 
         this.menu.push(el);

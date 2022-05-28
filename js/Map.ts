@@ -2,9 +2,9 @@ class Map {
     deckCtx: any
     viewCtx: any
     view: Panel;
-    size: any;
-    mapTilesSize: number;
-    miniMapTileSize: any;
+    size: any = 200;
+    mapTilesSize: number = 50;
+    miniMapTileSize: any = 5;
     engine: Engine;
     worker: any;
     map: any;
@@ -14,9 +14,6 @@ class Map {
         this.deckCtx = deckCtx;
         this.viewCtx = viewCtx;
         this.view = view;
-        this.size = 200;
-        this.mapTilesSize = 50;
-        this.miniMapTileSize = 5;
         this.engine = null;
         this.worker = new Worker("/js/MapWorker.js");
 
